@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>public-pages</title>
+  <style>
+    :root { --bg:#f7f6f3; --card:#fff; --ink:#1f2328; --muted:#6b7280; --line:#e3e1dc; --accent:#347f8b; }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg:#0f1418; --card:#171d22; --ink:#e6e9ea; --muted:#93a0a6; --line:#2a3239; --accent:#78d3d4; }
+    }
+    * { box-sizing:border-box; }
+    body { margin:0; padding:56px 20px 96px; background:var(--bg); color:var(--ink);
+           font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif; line-height:1.8; }
+    main { width:min(760px,100%); margin:0 auto; }
+    h1 { margin:0 0 6px; font-size:28px; letter-spacing:.02em; }
+    .lead { margin:0 0 40px; color:var(--muted); font-size:14px; }
+    h2 { margin:36px 0 12px; font-size:13px; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); }
+    ul { list-style:none; margin:0; padding:0; display:grid; gap:10px; }
+    a.card { display:block; padding:16px 18px; background:var(--card); border:1px solid var(--line);
+             border-radius:10px; color:inherit; text-decoration:none; }
+    a.card:hover { border-color:var(--accent); }
+    a.card strong { display:block; font-size:15px; }
+    a.card span { color:var(--muted); font-size:12px; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>public-pages</h1>
+    <p class="lead">静的 HTML の公開置き場。</p>
+
+    <h2>マダミス</h2>
+    <ul>
+      <li>
+        <a class="card" href="madamisu/tsukikage-overview.html">
+          <strong>月影島の勿忘草｜シナリオ概要</strong>
+          <span>GM 向け資料（真相を含む）</span>
+        </a>
+      </li>
+    </ul>
+  </main>
+</body>
+</html>

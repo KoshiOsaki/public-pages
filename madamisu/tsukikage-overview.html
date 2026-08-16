@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>月影島の勿忘草｜シナリオ概要</title>
+  <style>
+    :root {
+      --navy:#071821; --navy-2:#0d2832; --paper:#f4f0e8; --card:#fffdf8;
+      --ink:#17262d; --muted:#66767b; --line:#d8d2c6; --blue:#347f8b;
+      --cyan:#78d3d4; --red:#923d45; --gold:#a47d35; --green:#477c67;
+    }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { margin:0; color:var(--ink); background:var(--paper); font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif; line-height:1.85; }
+    button { font:inherit; }
+    .hero { min-height:470px; padding:64px max(24px,calc((100vw - 1160px)/2)); color:#f4f8f6; background:radial-gradient(circle at 82% 22%,#245467 0,transparent 29%),linear-gradient(135deg,#06141c,#0d2b36 62%,#123c48); position:relative; overflow:hidden; }
+    .hero::after { content:""; position:absolute; right:-90px; bottom:-190px; width:520px; height:520px; border:1px solid rgba(120,211,212,.28); border-radius:50%; box-shadow:0 0 0 55px rgba(120,211,212,.03),0 0 0 120px rgba(120,211,212,.025); }
+    .kicker,.label { color:var(--cyan); font:700 11px/1.4 ui-monospace,monospace; letter-spacing:.18em; text-transform:uppercase; }
+    .hero h1 { margin:25px 0 8px; font-family:"Yu Mincho","Hiragino Mincho ProN",serif; font-size:clamp(42px,7vw,78px); font-weight:500; letter-spacing:.09em; }
+    .tagline { margin:0; max-width:680px; color:#c8d7d7; font-family:"Yu Mincho",serif; font-size:18px; }
+    .meta { display:flex; flex-wrap:wrap; gap:10px; margin-top:38px; }
+    .meta span { padding:7px 12px; border:1px solid rgba(255,255,255,.22); border-radius:999px; color:#c9d5d5; font-size:12px; }
+    .hero-note { max-width:760px; margin-top:32px; padding:16px 18px; border-left:3px solid var(--cyan); background:rgba(0,0,0,.18); color:#cbd7d7; font-size:13px; }
+    .nav { position:sticky; top:0; z-index:10; display:flex; gap:6px; padding:10px max(18px,calc((100vw - 1160px)/2)); overflow:auto; background:rgba(7,24,33,.96); backdrop-filter:blur(12px); border-bottom:1px solid rgba(255,255,255,.1); }
+    .nav a { flex:none; padding:8px 11px; color:#aebfc0; text-decoration:none; font-size:12px; border-radius:6px; }
+    .nav a:hover { color:#fff; background:rgba(255,255,255,.08); }
+    main { width:min(1160px,calc(100% - 36px)); margin:0 auto; padding:54px 0 100px; }
+    section { scroll-margin-top:72px; margin-bottom:76px; }
+    .section-head { display:flex; justify-content:space-between; gap:24px; align-items:end; padding-bottom:16px; margin-bottom:24px; border-bottom:1px solid var(--line); }
+    .section-head h2 { margin:7px 0 0; font-family:"Yu Mincho",serif; font-size:32px; font-weight:600; }
+    .section-head p { max-width:520px; margin:0; color:var(--muted); font-size:13px; }
+    .summary-grid { display:grid; grid-template-columns:1.15fr .85fr; gap:18px; }
+    .panel,.character,.evidence,.phase { background:var(--card); border:1px solid var(--line); border-radius:12px; }
+    .panel { padding:26px; }
+    .panel h3 { margin:0 0 13px; font-size:16px; }
+    .panel p { margin:0 0 12px; color:#45555b; font-size:14px; }
+    .panel p:last-child { margin-bottom:0; }
+    .fact-list { display:grid; gap:1px; padding:0; margin:0; background:var(--line); border:1px solid var(--line); border-radius:10px; overflow:hidden; list-style:none; }
+    .fact-list li { display:grid; grid-template-columns:110px 1fr; gap:14px; padding:13px 16px; background:var(--card); font-size:13px; }
+    .fact-list strong { color:var(--blue); }
+    .characters { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+    .character { overflow:hidden; }
+    .character summary { padding:20px; cursor:pointer; list-style:none; }
+    .character summary::-webkit-details-marker { display:none; }
+    .character summary::after { content:"＋"; float:right; color:var(--blue); }
+    .character[open] summary::after { content:"−"; }
+    .character .num { color:var(--blue); font:700 10px ui-monospace,monospace; }
+    .character h3 { display:inline; margin:0 0 0 10px; font-family:"Yu Mincho",serif; font-size:19px; }
+    .character .job { margin:8px 0 0; color:var(--muted); font-size:12px; }
+    .character-body { padding:0 20px 20px; border-top:1px solid var(--line); }
+    .character-body h4 { margin:20px 0 8px; color:var(--blue); font-size:12px; }
+    .character-body p,.character-body li { color:#45545a; font-size:12px; }
+    .character-body ul { margin:0; padding-left:20px; }
+    .culprit { border-color:#c79ba0; box-shadow:inset 0 3px var(--red); }
+    .culprit-badge { margin-left:8px; padding:3px 6px; border-radius:4px; background:#f2dfe1; color:var(--red); font:700 9px ui-monospace,monospace; }
+    .relation { display:grid; grid-template-columns:1fr 48px 1fr; gap:12px; align-items:center; margin-bottom:8px; }
+    .relation > div { padding:13px; background:var(--card); border:1px solid var(--line); border-radius:8px; font-size:12px; }
+    .relation > span { color:var(--blue); text-align:center; font-size:18px; }
+    .timeline { position:relative; padding-left:104px; }
+    .timeline::before { content:""; position:absolute; left:79px; top:10px; bottom:10px; width:1px; background:var(--line); }
+    .event { position:relative; display:grid; grid-template-columns:1.6fr .9fr; gap:22px; padding:13px 0; border-bottom:1px dashed var(--line); }
+    .event time { position:absolute; left:-104px; width:70px; color:var(--blue); font:700 12px ui-monospace,monospace; text-align:right; }
+    .event::before { content:""; position:absolute; left:-30px; top:21px; width:7px; height:7px; border-radius:50%; background:var(--blue); box-shadow:0 0 0 4px var(--paper); }
+    .event strong { font-size:13px; }
+    .event span { color:var(--muted); font-size:12px; }
+    .event.murder { margin-inline:-12px; padding-inline:12px; border-radius:8px; background:#f4e7e8; }
+    .event.murder::before { background:var(--red); }
+    .reasoning { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; }
+    .reason-step { min-height:220px; padding:20px; background:var(--card); border:1px solid var(--line); border-top:3px solid var(--blue); border-radius:10px; }
+    .reason-step:nth-child(4) { border-top-color:var(--red); }
+    .reason-step .step { color:var(--blue); font:700 10px ui-monospace,monospace; }
+    .reason-step h3 { margin:10px 0; font-size:16px; }
+    .reason-step ul { margin:0; padding-left:17px; }
+    .reason-step li { margin-bottom:6px; color:#506066; font-size:11px; }
+    .evidence-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
+    .evidence { padding:18px; }
+    .evidence .id { color:var(--blue); font:700 10px ui-monospace,monospace; }
+    .evidence .place { float:right; color:var(--muted); font-size:10px; }
+    .evidence h3 { margin:28px 0 8px; font-size:15px; }
+    .evidence p { margin:0; color:#55656a; font-size:11px; line-height:1.75; }
+    .evidence.public { border-top:3px solid var(--gold); }
+    .evidence.key { border-top:3px solid var(--red); }
+    .legend { display:flex; gap:16px; margin-bottom:16px; color:var(--muted); font-size:11px; }
+    .legend i { display:inline-block; width:10px; height:3px; margin-right:6px; vertical-align:middle; background:var(--gold); }.legend i.red { background:var(--red); }
+    .phases { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; }
+    .phase { padding:17px; }
+    .phase .time { color:var(--blue); font:700 10px ui-monospace,monospace; }
+    .phase h3 { margin:8px 0; font-size:14px; }
+    .phase p { margin:0; color:var(--muted); font-size:10px; }
+    .truth { padding:36px; color:#eff5f3; background:linear-gradient(140deg,var(--navy-2),#16333a); border-radius:14px; }
+    .truth h3 { margin:0 0 18px; font:500 28px "Yu Mincho",serif; }.truth h3 strong { color:#f2a5aa; }
+    .truth p { color:#cedbda; font-size:13px; }
+    .truth-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; margin-top:25px; background:rgba(255,255,255,.15); }
+    .truth-grid div { padding:18px; background:rgba(5,18,24,.65); }
+    .truth-grid b { display:block; margin-bottom:7px; color:var(--cyan); font-size:11px; }
+    .truth-grid span { color:#d5dfde; font-size:11px; }
+    .review { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+    .review .panel { border-left:4px solid var(--green); }.review .panel.risk { border-left-color:var(--gold); }
+    .spoiler-toggle { position:fixed; right:18px; bottom:18px; z-index:20; padding:10px 14px; border:0; border-radius:999px; color:#fff; background:var(--red); box-shadow:0 8px 24px rgba(0,0,0,.25); cursor:pointer; font-size:12px; }
+    body.hide-spoilers .spoiler { filter:blur(7px); user-select:none; pointer-events:none; }
+    footer { padding:28px; color:#819095; background:var(--navy); text-align:center; font-size:11px; }
+    @media(max-width:850px){ .summary-grid,.characters,.evidence-grid,.reasoning,.phases,.review,.truth-grid{grid-template-columns:1fr 1fr}.section-head{display:block}.section-head p{margin-top:8px}.event{grid-template-columns:1fr}.event span{margin-top:-12px}.relation{grid-template-columns:1fr}.relation>span{transform:rotate(90deg)} }
+    @media(max-width:560px){ .characters,.evidence-grid,.reasoning,.phases,.review,.truth-grid,.summary-grid{grid-template-columns:1fr}.hero{padding-block:44px}.timeline{padding-left:76px}.timeline::before{left:57px}.event time{left:-76px;width:50px}.event::before{left:-23px}.section-head h2{font-size:26px}.truth{padding:24px}.fact-list li{grid-template-columns:90px 1fr} }
+    @media print { .nav,.spoiler-toggle{display:none}.hero{min-height:auto;padding:30px}.spoiler{filter:none!important}.character{break-inside:avoid}.character:not([open]) .character-body{display:block} main{width:100%;padding:24px} }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="kicker">Scenario overview / Spoiler document</div>
+    <h1>月影島の勿忘草</h1>
+    <p class="tagline">青い海が記憶を返す夜、ひとつの嘘が灯台を閉ざした。</p>
+    <div class="meta"><span>6人専用</span><span>約120分</span><span>中級</span><span>1989年・孤島</span><span>GMアプリ進行</span></div>
+    <div class="hero-note"><strong>⚠ シナリオ担当・実装担当向け資料</strong><br>犯人、殺害方法、全キャラクターの秘密を含みます。プレイヤーには見せないでください。</div>
+  </header>
+  <nav class="nav">
+    <a href="#summary">全体像</a><a href="#characters">登場人物</a><a href="#relations">人物関係</a><a href="#timeline">時系列</a><a href="#reasoning">推理導線</a><a href="#evidence">証拠</a><a href="#flow">進行</a><a href="#truth">真相</a><a href="#review">確認点</a>
+  </nav>
+  <main>
+    <section id="summary">
+      <div class="section-head"><div><span class="label">01 / Overview</span><h2>シナリオの全体像</h2></div><p>現在の事件と二十二年前の沈没事故が、二本の吸入器を介して接続します。</p></div>
+      <div class="summary-grid">
+        <div class="panel">
+          <h3>プレイヤーが最初に知ること</h3>
+          <p>廃止前夜の月影島海象観測所。所長・鳴海冬一郎が、内側から閂の下りた灯室で死亡します。遺体の右手には、普段のものとは異なる古い銀色の吸入器。死亡直前と思われる館内放送と、その直後の停電がありました。</p>
+          <p>鳴海は午前零時、二十二年前に沈んだ〈わすれな丸〉の未公開音声を公表する予定でした。</p>
+        </div>
+        <ul class="fact-list spoiler">
+          <li><strong>被害者</strong><span>鳴海冬一郎・観測所長</span></li>
+          <li><strong>犯人</strong><span>白瀬椿・遺族会代表</span></li>
+          <li><strong>死因</strong><span>毒入り吸入器による青酸中毒</span></li>
+          <li><strong>死亡時刻</strong><span>21:09〜21:13</span></li>
+          <li><strong>密室</strong><span>21:20の停電で自動錠が作動</span></li>
+          <li><strong>動機</strong><span>妹の死と事故後の隠蔽への復讐</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="characters">
+      <div class="section-head"><div><span class="label">02 / Characters</span><h2>6人の登場人物</h2></div><p>カードを開くと、公開情報・隠し事・事件に必要な情報を確認できます。</p></div>
+      <div class="characters spoiler">
+        <details class="character"><summary><span class="num">CH01</span><h3>汐見 碧</h3><div class="job">29歳・海洋生物学者</div></summary><div class="character-body"><h4>表の立場</h4><p>鳴海の元教え子。観測所存続を主張。</p><h4>隠し事</h4><ul><li>月影潮の研究データを改ざん。</li><li>鳴海へ鎮静薬を一錠渡し、袋を焼却。</li></ul><h4>推理情報</h4><ul><li>20:48時点の本物の吸入器には青いテープ。</li><li>21:10、灯室に二人の影。片方は髪を結んでいた。</li></ul></div></details>
+        <details class="character"><summary><span class="num">CH02</span><h3>久世 蓮</h3><div class="job">41歳・連絡船船長</div></summary><div class="character-body"><h4>表の立場</h4><p>島の連絡船船長。沈没船船長の息子。</p><h4>隠し事</h4><ul><li>鳴海の航海日誌を盗んだ。</li><li>窃盗時刻を隠すため時計を10分遅らせた。</li></ul><h4>推理情報</h4><ul><li>父は救難信号を送っていた。</li><li>21:19、非常階段から礼拝室へ向かうゴム底の足音。</li></ul></div></details>
+        <details class="character"><summary><span class="num">CH03</span><h3>鳴海 澪</h3><div class="job">26歳・観測所技師</div></summary><div class="character-body"><h4>表の立場</h4><p>被害者の娘。灯台設備の保守担当。</p><h4>隠し事</h4><ul><li>解体契約書を焼却した。</li><li>塩害の継電器交換を延期し、停電の原因を作った。</li></ul><h4>推理情報</h4><ul><li>本物の吸入器には青いテープ。</li><li>21:17の放送は生放送ではない。</li></ul></div></details>
+        <details class="character"><summary><span class="num">CH04</span><h3>榊 慧</h3><div class="job">35歳・音響記録家</div></summary><div class="character-body"><h4>表の立場</h4><p>失われた音を集める記録家。</p><h4>隠し事</h4><ul><li>沈没事故で死亡した無線士・榊灯の弟。</li><li>事故音声を盗み、21:17の時限放送を仕掛けた。</li></ul><h4>推理情報</h4><ul><li>放送時刻は死亡時刻の根拠にならない。</li><li>21:20は御影空と暗室にいた。</li></ul></div></details>
+        <details class="character"><summary><span class="num">CH05</span><h3>御影 空</h3><div class="job">32歳・フリー記者</div></summary><div class="character-body"><h4>表の立場</h4><p>事故の真相を追う告発記者。</p><h4>隠し事</h4><ul><li>記録改ざんの責任を負わされた御影武の子。</li><li>20:58、鳴海の吸入器を無断撮影。</li></ul><h4>推理情報</h4><ul><li>20:58時点では青いテープ付きの本物。</li><li>21:08、旧型吸入器を持つ椿と灯室前ですれ違った。</li></ul></div></details>
+        <details class="character culprit"><summary><span class="num">CH06</span><h3>白瀬 椿</h3><span class="culprit-badge">CULPRIT</span><div class="job">38歳・元看護師／遺族会代表</div></summary><div class="character-body"><h4>動機</h4><p>鳴海に吸入器を奪われて死亡した妹・雪の復讐。</p><h4>犯行</h4><ul><li>20:42、雪の旧型吸入器へ毒を仕込む。</li><li>20:58以降、本物を回収して礼拝室へ隠す。</li><li>21:08、灯室で偽物を鳴海へ渡す。</li><li>21:11、非常階段から礼拝室へ逃走。</li></ul></div></details>
+      </div>
+    </section>
+
+    <section id="relations">
+      <div class="section-head"><div><span class="label">03 / Relations</span><h2>人物関係</h2></div><p>全員が鳴海と過去の事故でつながりますが、殺意と犯行能力は同じではありません。</p></div>
+      <div class="spoiler">
+        <div class="relation"><div><b>汐見碧</b><br>弟子／研究データ改ざん</div><span>→</span><div><b>鳴海冬一郎</b><br>研究者として支配・黙認</div></div>
+        <div class="relation"><div><b>久世蓮</b><br>濡れ衣を着せられた船長の息子</div><span>→</span><div><b>鳴海冬一郎</b><br>救難記録の隠蔽</div></div>
+        <div class="relation"><div><b>鳴海澪</b><br>娘／観測所を残したい</div><span>↔</span><div><b>鳴海冬一郎</b><br>告白して観測所を閉じたい</div></div>
+        <div class="relation"><div><b>榊慧</b><br>死亡した無線士の弟</div><span>→</span><div><b>鳴海冬一郎</b><br>事故音声を隠した人物</div></div>
+        <div class="relation"><div><b>御影空</b><br>責任を負わされた当直助手の子</div><span>→</span><div><b>鳴海冬一郎</b><br>改ざんを命じた人物</div></div>
+        <div class="relation"><div><b>白瀬椿</b><br>吸入器を奪われた雪の姉</div><span>⚔</span><div><b>鳴海冬一郎</b><br>復讐の対象／被害者</div></div>
+      </div>
+    </section>
+
+    <section id="timeline">
+      <div class="section-head"><div><span class="label">04 / Timeline</span><h2>事件当夜の正しい時系列</h2></div><p>21:17の声と21:20の密室は、死亡後に発生した別件です。</p></div>
+      <div class="timeline spoiler">
+        <div class="event"><time>20:42</time><strong>椿が暗室で旧型吸入器へ毒を仕込む</strong><span>雪の遺品を偽の吸入器にする</span></div>
+        <div class="event"><time>20:48</time><strong>碧が鳴海へ鎮静薬を渡す</strong><span>この時点の本物には青いテープ</span></div>
+        <div class="event"><time>20:50</time><strong>澪が解体契約書を焼く</strong><span>鳴海と口論</span></div>
+        <div class="event"><time>20:55</time><strong>蓮が航海日誌を盗む</strong><span>資料室の時計を10分遅らせる</span></div>
+        <div class="event"><time>20:58</time><strong>空が本物の吸入器を撮影</strong><span>椿が後から回収し、礼拝室へ隠す</span></div>
+        <div class="event"><time>21:05</time><strong>慧が事故音声を複製</strong><span>資料室から放送室へ</span></div>
+        <div class="event"><time>21:08</time><strong>椿が鳴海へ偽物を渡す</strong><span>空が灯室前で目撃</span></div>
+        <div class="event murder"><time>21:09–13</time><strong>鳴海が毒入り吸入器を使い死亡</strong><span>21:10に碧が二人の影を目撃</span></div>
+        <div class="event"><time>21:11</time><strong>椿が非常階段から逃走</strong><span>礼拝室へ戻り、ハンカチを落とす</span></div>
+        <div class="event"><time>21:12</time><strong>慧が時限放送を設定</strong><span>過去の音声を編集</span></div>
+        <div class="event"><time>21:17</time><strong>館内放送が自動再生</strong><span>鳴海はすでに死亡</span></div>
+        <div class="event"><time>21:20</time><strong>自然故障で停電、自動錠が作動</strong><span>偶然、灯室が密室になる</span></div>
+        <div class="event"><time>21:27</time><strong>灯室で遺体発見</strong><span>澪と碧らが到着</span></div>
+      </div>
+    </section>
+
+    <section id="reasoning">
+      <div class="section-head"><div><span class="label">05 / Reasoning</span><h2>推理導線</h2></div><p>一つの決定的証拠ではなく、四段階の推論で犯人へ到達します。</p></div>
+      <div class="reasoning spoiler">
+        <div class="reason-step"><span class="step">STEP 1</span><h3>死亡時刻を壊す</h3><ul><li>21:17の放送は録音</li><li>死因鑑定は21:09〜13</li><li>停電前に死亡している</li></ul></div>
+        <div class="reason-step"><span class="step">STEP 2</span><h3>密室を無効化</h3><ul><li>21:20に自然故障で停電</li><li>自動錠は重りと連動</li><li>犯人は施錠していない</li></ul></div>
+        <div class="reason-step"><span class="step">STEP 3</span><h3>吸入器の交換を証明</h3><ul><li>20:58は青テープ付き現行型</li><li>遺体は刻印入り旧型</li><li>毒は旧型カートリッジ内</li></ul></div>
+        <div class="reason-step"><span class="step">STEP 4</span><h3>椿へ接続</h3><ul><li>「S. YUKI」と遺族名簿</li><li>空の21:08目撃</li><li>礼拝室の白椿ハンカチ</li><li>本物から椿の指紋</li></ul></div>
+      </div>
+    </section>
+
+    <section id="evidence">
+      <div class="section-head"><div><span class="label">06 / Evidence</span><h2>証拠カード一覧</h2></div><p>公開証拠6枚で土台を保証し、個人調査17枚で犯人・動機・各人の嘘を掘り下げます。</p></div>
+      <div class="legend"><span><i></i>フェーズ開始時に公開</span><span><i class="red"></i>犯人特定の主要証拠</span></div>
+      <div class="evidence-grid spoiler">
+        <article class="evidence public"><span class="id">C101</span><span class="place">灯室</span><h3>遺体と灯室</h3><p>旧型吸入器／自動錠の構造。</p></article>
+        <article class="evidence public"><span class="id">C102</span><span class="place">放送室</span><h3>21時17分の放送</h3><p>時限再生。生存証明にならない。</p></article>
+        <article class="evidence public"><span class="id">C103</span><span class="place">医務室</span><h3>焼却缶の薬袋</h3><p>碧の鎮静薬は致死量ではない。</p></article>
+        <article class="evidence"><span class="id">C104–105</span><span class="place">資料室</span><h3>遅れた時計／航海日誌</h3><p>蓮の窃盗と、救難信号送信の事実。</p></article>
+        <article class="evidence key"><span class="id">C106–107</span><span class="place">暗室</span><h3>欠けた毒／吸入器写真</h3><p>凶器の材料と20:58時点の本物。</p></article>
+        <article class="evidence"><span class="id">C108–109</span><span class="place">機械室</span><h3>ゴム底の足跡／自動錠</h3><p>逃走経路と密室成立の仕組み。</p></article>
+        <article class="evidence"><span class="id">C110–111</span><span class="place">食堂</span><h3>契約書／鎮静薬</h3><p>澪と碧の隠し事を殺人から分離。</p></article>
+        <article class="evidence public"><span class="id">C201</span><span class="place">遺体</span><h3>死因の簡易鑑定</h3><p>吸入による青酸中毒、21:09〜13。</p></article>
+        <article class="evidence public"><span class="id">C202</span><span class="place">暗室</span><h3>20時58分の完成写真</h3><p>青テープ付き現行型が存在。</p></article>
+        <article class="evidence public"><span class="id">C203</span><span class="place">保管庫</span><h3>二種類の録音</h3><p>雪の薬不足と鳴海の隠蔽命令。</p></article>
+        <article class="evidence key"><span class="id">C204</span><span class="place">遺体</span><h3>「S. YUKI」の刻印</h3><p>遺体の吸入器を雪へ接続。</p></article>
+        <article class="evidence"><span class="id">C205</span><span class="place">遺体</span><h3>紫色の糸</h3><p>争いではなく自分の襟を掴んだ痕。</p></article>
+        <article class="evidence key"><span class="id">C206–207</span><span class="place">礼拝室</span><h3>白椿のハンカチ／遺族名簿</h3><p>毒・椿・雪・旧型吸入器を接続。</p></article>
+        <article class="evidence"><span class="id">C208–209</span><span class="place">放送室</span><h3>編集音声／暗室の会話</h3><p>慧の工作と慧・空のアリバイ。</p></article>
+        <article class="evidence"><span class="id">C210</span><span class="place">所長私室</span><h3>鳴海の告白文</h3><p>被害者の過去と公表予定。</p></article>
+        <article class="evidence key"><span class="id">C211</span><span class="place">礼拝室</span><h3>現行型の吸入器</h3><p>椿と空の指紋。本物の隠し場所。</p></article>
+        <article class="evidence"><span class="id">C212</span><span class="place">機械室</span><h3>停電原因の記録</h3><p>自然故障と21:20の自動施錠。</p></article>
+      </div>
+    </section>
+
+    <section id="flow">
+      <div class="section-head"><div><span class="label">07 / Game flow</span><h2>120分の進行</h2></div><p>情報量が増えるタイミングで議論を区切り、推理の停滞をリセットします。</p></div>
+      <div class="phases">
+        <article class="phase"><span class="time">15 MIN</span><h3>導入・HO確認</h3><p>注意事項、導入朗読、個別読込。</p></article>
+        <article class="phase"><span class="time">12 MIN</span><h3>自己紹介</h3><p>公開プロフィールと来島目的。</p></article>
+        <article class="phase"><span class="time">12 MIN</span><h3>第一捜査</h3><p>公開3枚＋一人2回調査。</p></article>
+        <article class="phase"><span class="time">25 MIN</span><h3>第一議論・密談</h3><p>全体15分、密談10分。</p></article>
+        <article class="phase"><span class="time">10 MIN</span><h3>第二捜査</h3><p>死因・写真・録音を追加。</p></article>
+        <article class="phase"><span class="time">25 MIN</span><h3>最終議論</h3><p>自由議論＋一人1分の最終主張。</p></article>
+        <article class="phase"><span class="time">5 MIN</span><h3>犯人投票</h3><p>同票でも決選投票なし。</p></article>
+        <article class="phase"><span class="time">15 MIN</span><h3>真相・感想戦</h3><p>真相、個別エピローグ、得点。</p></article>
+      </div>
+    </section>
+
+    <section id="truth">
+      <div class="section-head"><div><span class="label">08 / Truth</span><h2>真相の要約</h2></div><p>犯行と密室は別々に発生し、鳴海の遅すぎた告白が悲劇を完成させます。</p></div>
+      <div class="truth spoiler">
+        <h3>犯人は、<strong>白瀬 椿</strong></h3>
+        <p>椿は、二十二年前に鳴海が奪った妹・雪の旧型吸入器へ毒を仕込みました。20:58以降に鳴海の本物を回収し、21:08に灯室で偽物を「忘れ物」として渡します。鳴海は自ら毒を吸入して死亡。椿が逃げた9分後、自然故障による停電で自動錠が作動し、偶然の密室が完成しました。</p>
+        <div class="truth-grid"><div><b>テーマ</b><span>告白には、間に合う時と間に合わない時がある。</span></div><div><b>感情の反転</b><span>被害者は過去の加害者だが、真相を公表する直前だった。</span></div><div><b>最終イメージ</b><span>青い潮が消え、忘れられた声だけが本土へ帰る。</span></div></div>
+      </div>
+    </section>
+
+    <section id="review">
+      <div class="section-head"><div><span class="label">09 / Review notes</span><h2>テストプレイで確認する点</h2></div><p>現時点では完成稿ですが、難易度と感情面は実卓での調整が必要です。</p></div>
+      <div class="review">
+        <div class="panel"><h3>成立条件</h3><ul><li>公開証拠6枚を指定タイミングで必ず公開する。</li><li>空の目撃情報か、C206・C207・C211の組み合わせが最終議論へ出る。</li><li>21:17の放送を死亡時刻から切り離せる。</li><li>「密室を作った人物＝犯人」と思い込ませすぎない。</li></ul></div>
+        <div class="panel risk"><h3>調整候補</h3><ul><li>椿へ証拠が集中しすぎる場合、C206かC211を弱める。</li><li>犯人特定率が低い場合、C204を追加公開証拠にする。</li><li>青酸塩と旧型吸入器の技術的納得感を監修する。</li><li>事故被害者への二次加害にならない感想戦ガイドを確認する。</li></ul></div>
+      </div>
+    </section>
+  </main>
+  <button class="spoiler-toggle" type="button" onclick="document.body.classList.toggle('hide-spoilers');this.textContent=document.body.classList.contains('hide-spoilers')?'ネタバレを表示':'ネタバレを隠す'">ネタバレを隠す</button>
+  <footer>月影島の勿忘草 — scenario overview / source: shared/scenarios/tsukikage.ts</footer>
+</body>
+</html>
