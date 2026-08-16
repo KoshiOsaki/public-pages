@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>月影島の勿忘草｜物語再構成・整合性レビュー</title>
+  <style>
+    :root{--night:#07171f;--deep:#0d2933;--paper:#f3efe6;--card:#fffdf8;--ink:#19272d;--muted:#65747a;--line:#d8d1c5;--blue:#377f8a;--cyan:#77d0d0;--red:#933e46;--amber:#9b6c24;--green:#3f745e}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;color:var(--ink);background:var(--paper);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif;line-height:1.85}a{color:inherit}button{font:inherit}
+    header{padding:64px max(24px,calc((100vw - 1180px)/2));color:#eff5f3;background:radial-gradient(circle at 84% 15%,#255667 0,transparent 28%),linear-gradient(140deg,#06151d,#102c36);position:relative;overflow:hidden}header:after{content:"";position:absolute;right:-100px;bottom:-240px;width:560px;height:560px;border:1px solid rgba(119,208,208,.25);border-radius:50%;box-shadow:0 0 0 60px rgba(119,208,208,.025),0 0 0 130px rgba(119,208,208,.02)}
+    .eyebrow,.label{color:var(--cyan);font:700 10px/1.4 ui-monospace,monospace;letter-spacing:.18em;text-transform:uppercase}h1{margin:22px 0 9px;font:500 clamp(38px,6vw,68px)/1.35 "Yu Mincho","Hiragino Mincho ProN",serif;letter-spacing:.08em}header>p{max-width:780px;margin:0;color:#c8d5d5;font-family:"Yu Mincho",serif}.verdict{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;max-width:900px;margin-top:38px;background:rgba(255,255,255,.15)}.verdict div{padding:15px;background:rgba(5,18,24,.7)}.verdict b{display:block;color:var(--cyan);font-size:10px}.verdict span{font-size:13px}
+    nav{position:sticky;top:0;z-index:10;display:flex;gap:4px;padding:9px max(18px,calc((100vw - 1180px)/2));overflow:auto;background:rgba(7,23,31,.96);border-bottom:1px solid rgba(255,255,255,.1);backdrop-filter:blur(10px)}nav a{flex:none;padding:8px 10px;border-radius:5px;color:#afbec0;text-decoration:none;font-size:11px}nav a:hover{color:white;background:rgba(255,255,255,.08)}
+    main{width:min(1180px,calc(100% - 36px));margin:auto;padding:52px 0 100px}section{margin-bottom:76px;scroll-margin-top:70px}.section-head{display:flex;justify-content:space-between;align-items:end;gap:24px;margin-bottom:25px;padding-bottom:16px;border-bottom:1px solid var(--line)}.section-head h2{margin:7px 0 0;font:600 31px "Yu Mincho",serif}.section-head p{max-width:560px;margin:0;color:var(--muted);font-size:12px}
+    .lead{display:grid;grid-template-columns:1.2fr .8fr;gap:15px}.card{padding:24px;background:var(--card);border:1px solid var(--line);border-radius:11px}.card h3{margin:0 0 11px;font-size:16px}.card p,.card li{color:#46565c;font-size:13px}.card ul{margin:0;padding-left:20px}.score{display:grid;gap:1px;padding:0;background:var(--line);border:1px solid var(--line);border-radius:9px;overflow:hidden;list-style:none}.score li{display:grid;grid-template-columns:105px 1fr;padding:11px 14px;background:var(--card)}.score b{color:var(--blue)}
+    .story{counter-reset:scene}.scene{position:relative;margin-bottom:14px;padding:30px 34px 30px 86px;background:var(--card);border:1px solid var(--line);border-radius:11px}.scene:before{counter-increment:scene;content:"SCENE " counter(scene,decimal-leading-zero);position:absolute;left:22px;top:34px;color:var(--blue);font:700 9px ui-monospace,monospace;writing-mode:vertical-rl;letter-spacing:.12em}.scene h3{margin:0 0 14px;font:600 21px "Yu Mincho",serif}.scene p{margin:0 0 12px;color:#39494f;font-family:"Yu Mincho",serif;font-size:13px;line-height:2.05}.scene p:last-child{margin:0}.scene .aside{margin-top:17px;padding:12px 14px;border-left:3px solid var(--blue);background:#edf2ef;color:#526268;font-family:inherit;font-size:11px}.scene.problem{border-left:4px solid var(--amber)}.scene.problem .aside{border-left-color:var(--amber);background:#f4ecdf}
+    .table-wrap{overflow:auto;border:1px solid var(--line);border-radius:10px}.matrix{width:100%;min-width:1050px;border-collapse:collapse;background:var(--card);font-size:10px}.matrix th,.matrix td{padding:11px 10px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);vertical-align:top}.matrix th{position:sticky;top:0;color:#fff;background:var(--deep);font-size:10px}.matrix td:first-child{color:var(--blue);font:700 10px ui-monospace,monospace;white-space:nowrap}.matrix tr.danger td{background:#f4e5e6}.matrix .unknown{color:#9b8a7b;font-style:italic}.matrix .alibi{color:var(--green)}
+    .issues{display:grid;gap:11px}.issue{display:grid;grid-template-columns:100px 1fr 1fr;gap:20px;padding:21px;background:var(--card);border:1px solid var(--line);border-left:4px solid var(--amber);border-radius:9px}.issue.critical{border-left-color:var(--red)}.issue.medium{border-left-color:var(--blue)}.severity{font:700 10px ui-monospace,monospace;letter-spacing:.08em}.critical .severity{color:var(--red)}.medium .severity{color:var(--blue)}.issue h3{margin:0 0 7px;font-size:14px}.issue p{margin:0;color:#526168;font-size:11px}.fix{padding-left:17px;border-left:1px solid var(--line)}.fix b{display:block;margin-bottom:6px;color:var(--green);font-size:11px}
+    .canon{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.canon .card{border-top:3px solid var(--green)}.canon .num{color:var(--green);font:700 10px ui-monospace,monospace}.canon h3{margin-top:9px}.canon code{display:block;margin-top:12px;padding:11px;background:#edf1ed;color:#315d4c;white-space:normal;font:11px/1.7 ui-monospace,monospace}
+    .chain{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}.chain>div{position:relative;padding:18px;background:var(--card);border:1px solid var(--line);border-top:3px solid var(--blue);border-radius:8px}.chain>div:not(:last-child):after{content:"→";position:absolute;right:-15px;top:46%;z-index:2;color:var(--blue);font-weight:bold}.chain b{display:block;margin-bottom:8px;font-size:13px}.chain span{color:var(--muted);font-size:10px}.chain .last{border-top-color:var(--red)}
+    .sources{padding:22px;background:#e9e5db;border-radius:9px}.sources li{margin-bottom:7px;color:#59686d;font-size:11px;word-break:break-all}.decision{padding:28px;color:#dfe8e6;background:var(--deep);border-radius:12px}.decision h3{margin:0 0 13px;color:white;font:600 22px "Yu Mincho",serif}.decision p{margin:0;color:#c6d3d2;font-size:12px}.decision strong{color:var(--cyan)}
+    footer{padding:28px;color:#7f9094;background:var(--night);text-align:center;font-size:10px}
+    @media(max-width:850px){.verdict,.lead,.canon,.chain{grid-template-columns:1fr 1fr}.issue{grid-template-columns:80px 1fr}.issue .fix{grid-column:2}.section-head{display:block}.section-head p{margin-top:8px}.chain>div:after{display:none}}
+    @media(max-width:570px){.verdict,.lead,.canon,.chain{grid-template-columns:1fr}.issue{grid-template-columns:1fr}.issue .fix{grid-column:auto;padding:14px 0 0;border-left:0;border-top:1px solid var(--line)}.scene{padding:24px 20px 24px 54px}.scene:before{left:14px}.section-head h2{font-size:26px}}
+    @media print{nav{display:none}header{padding:28px}.scene,.issue{break-inside:avoid}main{width:100%;padding:25px}.table-wrap{overflow:visible}.matrix{min-width:0;font-size:7px}.matrix th,.matrix td{padding:5px}}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="eyebrow">Solo consistency review / Full spoilers</div>
+    <h1>月影島の勿忘草<br>物語再構成</h1>
+    <p>テストプレイヤーなしで、作者が一人で因果関係・時系列・トリックの成立性を確認するための資料です。現行稿を物語順に再生し、問題点は物語と分離して記載しています。</p>
+    <div class="verdict"><div><b>物語の核</b><span>成立している</span></div><div><b>時系列</b><span>矛盾1件</span></div><div><b>トリック</b><span>要補強3件</span></div><div><b>推奨判断</b><span>局所修正で継続</span></div></div>
+  </header>
+  <nav><a href="#verdict">判定</a><a href="#story">小説調再構成</a><a href="#matrix">6人の時系列</a><a href="#issues">矛盾・無理</a><a href="#canon">推奨修正</a><a href="#logic">修正後の因果</a><a href="#sources">技術確認</a></nav>
+  <main>
+    <section id="verdict">
+      <div class="section-head"><div><span class="label">01 / Verdict</span><h2>結論</h2></div><p>大きく作り直す必要はありません。感情の中心と推理構造は機能しています。</p></div>
+      <div class="lead">
+        <div class="card"><h3>物語としてうまくいっている部分</h3><ul><li>現在の殺人と二十二年前の事故が「二本の吸入器」で視覚的につながる。</li><li>鳴海は単純な悪人ではなく、告白の直前に殺されるため、椿の復讐にも苦い反転がある。</li><li>全員の嘘が事件を複雑にする一方、殺人そのものとは切り離されている。</li><li>録音、停電、密室が同時刻付近に重なるが、実際には別々の原因という構造が中級向けに適している。</li></ul></div>
+        <ul class="score"><li><b>テーマ</b><span>「遅すぎた告白」</span></li><li><b>感情軸</b><span>復讐と赦しの不成立</span></li><li><b>推理軸</b><span>死亡時刻→密室→交換→犯人</span></li><li><b>最大の弱点</b><span>技術説明が物語より先行</span></li><li><b>修正規模</b><span>設定4点・台詞数行</span></li></ul>
+      </div>
+    </section>
+
+    <section id="story">
+      <div class="section-head"><div><span class="label">02 / Narrative reconstruction</span><h2>事件を最初から読む</h2></div><p>現行データを「誰も嘘をついていない神の視点」で並べた、ざっくりした小説兼台本です。</p></div>
+      <div class="story">
+        <article class="scene problem"><h3>二十二年前 — 届いていた声</h3><p>濃霧の夜、連絡船〈わすれな丸〉は月影島沖で沈んだ。若き海洋研究者だった鳴海冬一郎も船に乗っていた。冷たい海で喘息の発作を起こした少女・白瀬雪の手には、銀色の携帯吸入器があった。</p><p>鳴海は「自分が救助を指揮しなければ、全員が死ぬ」と言い、その吸入器を奪った。雪は姉・椿の腕の中で息絶えた。船は救難信号を送っており、島の観測所も受信していた。しかし事故後、鳴海は当直助手・御影武へ受信記録を隠すよう命じた。責任は船長と御影武へ向けられた。</p><div class="aside"><b>説明不足:</b> 現行稿では、鳴海がなぜ救難記録を隠す必要があったのかが示されていません。物語の過去を支える動機が一つ必要です。</div></article>
+        <article class="scene"><h3>廃止前夜 — 六通の招待状</h3><p>二十二年後。観測所長となった鳴海は、廃止を翌日に控えた観測所へ六人を招く。研究データを改ざんした弟子・汐見碧。濡れ衣を着せられた船長の息子・久世蓮。観測所を失いたくない娘・澪。事故で姉を失った音響記録家・榊慧。記録改ざんの責任を負わされた男の子・御影空。そして、雪の姉・白瀬椿。</p><p>鳴海は午前零時、すべての記録を公表すると告げる。だが、何を告白するのかまでは話さない。その沈黙が、それぞれの疑念を育てる。</p></article>
+        <article class="scene"><h3>20時35分〜50分 — 殺意と、別々の罪</h3><p>20時35分、碧は鳴海と研究データをめぐって口論する。20時42分、椿は暗室へ入り、雪の遺品である旧型吸入器へ毒を仕込む。20時48分、碧は興奮する鳴海へ鎮静薬を一錠渡す。この時、鳴海が持つ本物の吸入器には青い識別テープがある。</p><p>20時50分、澪は観測所の解体契約書を暖炉で燃やす。鳴海は娘を叱る。「過去を燃やしても、なかったことにはならない」。その言葉は、自分自身へ向けられている。</p></article>
+        <article class="scene"><h3>20時55分〜21時05分 — 記録を盗む者たち</h3><p>20時55分、蓮は資料室から父の航海日誌を盗む。そこには、救難信号を送信し、受信確認の応答まで得た記録がある。蓮は侵入時刻をごまかすため時計を10分遅らせる。</p><p>20時58分、空は食堂に置かれた鳴海の吸入器を撮影する。写真には青い識別テープと製造番号が残る。空が立ち去ったあと、椿は本物を回収し、礼拝室の祭壇裏へ隠す。21時05分、慧は資料室で事故音声を複製する。</p></article>
+        <article class="scene"><h3>21時08分 — 忘れ物</h3><p>旧型吸入器を手にした椿は、灯室へ向かう。廊下で空とすれ違い、「鳴海さんの忘れ物を届ける」と説明する。鳴海は椿を中へ入れた。</p><p>「雪のことを、覚えていますか」</p><p>鳴海は答えられない。息苦しさを覚えた彼へ、椿は吸入器を差し出す。鳴海はそれが自分のものではないと気づかなかったのか、それとも刻印を見て理解したうえで使ったのか。現稿では決めていない。どちらにするかで、鳴海の最期の人物像が変わる。</p></article>
+        <article class="scene problem"><h3>21時09分〜13分 — 死</h3><p>鳴海は毒入り吸入器を使い、灯室で倒れる。21時10分ごろ、屋上の碧が灯室に二人分の影を見る。椿は鳴海が苦しみ始めると、21時11分に扉を閉め、非常階段から逃げた。扉に鍵はかけていない。</p><p>鳴海の右手には「S. YUKI」と刻まれた旧型吸入器が残る。復讐の印であり、椿からの告発でもあった。</p><div class="aside"><b>技術上の問題:</b> 22年前の吸入器へ液体を入れればそのまま使える、という現状の説明は機種によって成立しません。再利用型の液体噴霧器と明示する必要があります。</div></article>
+        <article class="scene"><h3>21時12分〜17分 — 死者の放送</h3><p>慧は事故音声を守るため、放送卓へ過去の謝罪を編集した短いテープを仕掛ける。21時17分、館内に鳴海の声が響く。「澪、すまなかった。これで全部、終わりにする」。澪は放送室へ走り、それが生放送ではないと気づく。</p><p>この声によって、全員は無意識に「鳴海は21時17分まで生きていた」と思い込む。しかし実際には、すでに灯室で死亡している。</p></article>
+        <article class="scene problem"><h3>21時20分 — 偶然の密室</h3><p>嵐の飛沫が、塩害で劣化した継電器へ入り込む。観測所は停電し、灯室の重り式安全装置が作動する。内側の閂が自動的に下り、誰もいない室内が密室になる。</p><p>21時27分、復電後に灯室へ到着した澪と碧たちは、内側から閉ざされた部屋で鳴海の遺体を発見する。</p><div class="aside"><b>説明の順序:</b> 第一公開証拠で自動錠の答えまで明かすと、密室推理が始まる前に終わります。第一段階は「閂に人が触れた跡がない」までに留め、設計図と停電記録で解かせた方が自然です。</div></article>
+        <article class="scene"><h3>夜明け — 三時間早かった復讐</h3><p>鳴海の私室には、署名済みの告白文が残る。雪の吸入器を奪ったこと。救難信号の受信記録を隠したこと。船長と御影武へ責任を負わせたこと。午前零時、彼はすべてを公表するつもりだった。</p><p>椿の復讐は、告白より三時間早かった。だからといって、二十二年前の鳴海の罪が消えるわけではない。だからといって、椿の殺人が許されるわけでもない。夜明け、月影潮の青い光は消え、忘れられた声だけが人々の間へ戻っていく。</p></article>
+      </div>
+    </section>
+
+    <section id="matrix">
+      <div class="section-head"><div><span class="label">03 / Six-person timeline</span><h2>6人のタイムライン</h2></div><p>横に読むと、同時刻の位置関係とアリバイの穴を確認できます。</p></div>
+      <div class="table-wrap"><table class="matrix"><thead><tr><th>時刻</th><th>汐見碧</th><th>久世蓮</th><th>鳴海澪</th><th>榊慧</th><th>御影空</th><th>白瀬椿</th><th>鳴海冬一郎</th></tr></thead><tbody>
+        <tr><td>20:35</td><td>鳴海と口論</td><td class="unknown">桟橋へ</td><td class="unknown">観測所内</td><td>放送室の点検</td><td class="unknown">取材準備</td><td class="unknown">単独行動</td><td>食堂付近</td></tr>
+        <tr><td>20:42</td><td class="unknown">単独行動</td><td>桟橋</td><td class="unknown">観測所内</td><td>放送室</td><td class="unknown">取材準備</td><td><b>暗室で毒を仕込む</b></td><td>観測所内</td></tr>
+        <tr><td>20:48</td><td>鳴海へ鎮静薬</td><td>桟橋</td><td class="unknown">食堂へ</td><td>放送室</td><td class="unknown">観測所内</td><td class="unknown">単独行動</td><td>青テープの本物を所持</td></tr>
+        <tr><td>20:50</td><td class="unknown">移動</td><td class="unknown">資料室へ</td><td>契約書焼却・口論</td><td class="unknown">移動</td><td class="unknown">食堂付近</td><td class="unknown">単独行動</td><td>澪を叱責</td></tr>
+        <tr><td>20:55</td><td class="unknown">観測準備</td><td>日誌窃盗・時計操作</td><td class="unknown">配電盤へ</td><td class="unknown">資料室へ</td><td class="unknown">食堂へ</td><td class="unknown">食堂付近</td><td>吸入器を食堂に置く</td></tr>
+        <tr><td>20:58</td><td>屋上へ</td><td class="unknown">資料室から移動</td><td>配電盤</td><td>資料室付近</td><td>本物を撮影</td><td><b>本物を回収・隠す</b></td><td>灯室へ移動</td></tr>
+        <tr><td>21:05</td><td>屋上</td><td>機械室へ</td><td>電圧低下を確認</td><td>事故音声を複製</td><td>写真現像へ</td><td class="unknown">偽物を所持</td><td>灯室</td></tr>
+        <tr class="danger"><td>21:08</td><td>屋上</td><td>機械室</td><td>配電盤付近</td><td>放送室へ</td><td>灯室前で椿を目撃</td><td><b>灯室へ入る</b></td><td>椿を迎える</td></tr>
+        <tr class="danger"><td>21:09–13</td><td>21:10に二人の影</td><td>機械室</td><td>観測所内</td><td>21:12 時限放送設定</td><td>21:14 暗室</td><td><b>21:11 非常階段から逃走</b></td><td><b>毒を吸入し死亡</b></td></tr>
+        <tr><td>21:17</td><td>屋上</td><td>機械室</td><td>放送室へ走る</td><td class="unknown">暗室へ</td><td>暗室</td><td class="unknown">礼拝室</td><td>すでに死亡</td></tr>
+        <tr><td>21:20</td><td class="alibi">階段へ</td><td>機械室</td><td class="alibi">放送室から階段へ</td><td class="alibi">空と暗室</td><td class="alibi">慧と暗室</td><td>礼拝室</td><td>停電で灯室が密室化</td></tr>
+        <tr><td>21:27</td><td>灯室前</td><td>機械室から合流</td><td>灯室前</td><td>暗室から合流</td><td>暗室から合流</td><td>礼拝室から合流</td><td>遺体発見</td></tr>
+      </tbody></table></div>
+    </section>
+
+    <section id="issues">
+      <div class="section-head"><div><span class="label">04 / Contradictions & plausibility</span><h2>矛盾・無理がある点</h2></div><p>「物語が壊れる問題」と「一言補えば通る問題」を分けています。</p></div>
+      <div class="issues">
+        <article class="issue critical"><div class="severity">矛盾 / HIGH</div><div><h3>椿は21:11に逃げたのに、蓮は21:19に足音を聞く</h3><p>同じ非常階段の足音としては8分ずれています。現在のHO同士を突き合わせると、別人の足音か、どちらかが嘘でない限り成立しません。</p></div><div class="fix"><b>推奨修正</b><p>蓮の機械室到着を21:10、足音を21:12へ変更。21:19は「継電器の異音を聞いた」に置き換える。</p></div></article>
+        <article class="issue critical"><div class="severity">説明不足 / HIGH</div><div><h3>鳴海が救難記録を隠す動機がない</h3><p>吸入器を奪った事実と、観測所の受信記録を消す行為が因果でつながっていません。個人的な醜聞を隠すために船長まで陥れるのは飛躍があります。</p></div><div class="fix"><b>推奨修正</b><p>船は鳴海が管理する薬品を秘密裏に運ぶため、許可航路を外れていた。救難信号の座標が残ると違法輸送が発覚するため、受信記録を消した、と設定する。月影潮の薬品汚染とも接続できる。</p></div></article>
+        <article class="issue critical"><div class="severity">技術 / HIGH</div><div><h3>「旧型吸入器へ液体を入れる」の機械像が曖昧</h3><p>1989年には携帯型の定量噴霧式吸入器は十分存在しますが、一般的な加圧缶は簡単に詰め替えられません。22年前の本体がそのまま作動する点も補足が必要です。</p></div><div class="fix"><b>推奨修正</b><p>「金属製の手動ポンプ式液体噴霧器。ガラス薬液瓶を交換する旧式」と明記。椿が元看護師として洗浄・作動確認して保管していた、と一文追加する。</p></div></article>
+        <article class="issue critical"><div class="severity">技術 / HIGH</div><div><h3>暗室薬品から急性青酸中毒へ直結しにくい</h3><p>写真処理でシアン化合物は使われてきましたが、フェロシアン化物・フェリシアン化物を置いただけでは、作中のような即死毒と同一視できません。1989年の小規模暗室に強い青酸塩溶液がある理由も弱いです。</p></div><div class="fix"><b>推奨修正</b><p>毒の入手先を「水質分析室の青酸化合物標準液」に変更。月影潮と過去の薬品投棄を調べる観測所なので保管理由も生まれる。暗室は写真証拠と慧・空のアリバイに専念させる。</p></div></article>
+        <article class="issue medium"><div class="severity">推理 / MED</div><div><h3>孤島で死因と4分幅の死亡時刻を即断できない</h3><p>医師も法医学設備もいません。「簡易鑑定」だけで青酸中毒と21:09〜13を確定すると、GMの都合で答えが出た印象になります。</p></div><div class="fix"><b>推奨修正</b><p>死亡時刻は灯室の連続記録紙に21:11の大きな衝撃が記録されたこと、死因は水質分析用の検知試験で吸入器から青酸反応が出たことに分ける。医学的な死亡推定を使わない。</p></div></article>
+        <article class="issue medium"><div class="severity">推理 / MED</div><div><h3>第一証拠で密室の答えを言い切っている</h3><p>C101が「停電で重りが落下すると閂が下りる」と説明するため、C109とC212を待たずに密室が解けます。</p></div><div class="fix"><b>推奨修正</b><p>C101は「閂に触れた跡がない。扉上部から古いワイヤが伸びる」まで。C109で構造、C212で実際の作動時刻を確定する。</p></div></article>
+        <article class="issue medium"><div class="severity">人物 / MED</div><div><h3>鳴海が旧型吸入器を疑わず使うか</h3><p>普段の現行型には青いテープがあり、渡された旧型には雪の刻印があります。見た瞬間に異変へ気づく可能性があります。</p></div><div class="fix"><b>推奨修正</b><p>鳴海は刻印を見て雪のものだと気づく。それでも発作と罪悪感から使用する。「これは、雪さんの……」という最期の台詞を椿HOへ追加すると、物語上の意味も強くなる。</p></div></article>
+        <article class="issue medium"><div class="severity">運用 / MED</div><div><h3>公開済み証拠の場所をプレイヤーが再調査できる</h3><p>現行アプリではpublicRevealのカードも調査候補へ含まれるため、公開済みカードを個人手がかりとして再取得し、調査回数を失う可能性があります。</p></div><div class="fix"><b>推奨修正</b><p>サイト担当側で調査プールからpublicRevealを除外する。シナリオ文章で「選ばない」と案内するだけでは誤操作を防ぎきれない。</p></div></article>
+      </div>
+    </section>
+
+    <section id="canon">
+      <div class="section-head"><div><span class="label">05 / Recommended canon</span><h2>最小修正後の正史</h2></div><p>物語の核を変えず、説明の穴だけを埋める推奨案です。まだシナリオデータには反映していません。</p></div>
+      <div class="canon">
+        <article class="card"><span class="num">FIX 01</span><h3>二十二年前の事故</h3><p>鳴海は公的な海洋研究に見せかけ、薬品を許可外の海域へ運ぶ責任者だった。船の救難座標が残れば違法航路が判明するため、事故後に受信記録の隠蔽を命じた。</p><code>効果: 鳴海の隠蔽、久世家・御影家の被害、月影潮の薬品汚染が一つの原因へまとまる。</code></article>
+        <article class="card"><span class="num">FIX 02</span><h3>凶器の仕組み</h3><p>雪の遺品は「薬液瓶を差し込んで使う金属製手動噴霧器」。元看護師の椿が整備して保存していた。毒は暗室ではなく、水質分析室の標準液から入手する。</p><code>効果: 1989年の携帯吸入治療と矛盾せず、詰め替え可能性も説明できる。</code></article>
+        <article class="card"><span class="num">FIX 03</span><h3>死亡時刻の根拠</h3><p>灯室の回転レンズは振動を記録紙へ残す。21:11、鳴海が倒れた衝撃が記録される。吸入器の毒は水質分析用検知試験で判明する。</p><code>効果: 孤島で法医学的な即断をせず、観測所という舞台装置で推理できる。</code></article>
+        <article class="card"><span class="num">FIX 04</span><h3>鳴海の最期</h3><p>鳴海は「S. YUKI」の刻印に気づく。それでも発作が進み、椿を見ながら噴霧器を使う。「これは、雪さんの……」が最後の言葉になる。</p><code>効果: 単なる不注意をなくし、鳴海が自分の過去と向き合う最終場面になる。</code></article>
+        <article class="card"><span class="num">FIX 05</span><h3>椿の逃走</h3><p>椿は21:11に灯室を出て、21:12に機械室横を通る。蓮はその足音を聞く。21:19には継電器の異音が鳴り、21:20に停電する。</p><code>効果: 8分の矛盾を解消し、停電の予兆も同時に置ける。</code></article>
+        <article class="card"><span class="num">FIX 06</span><h3>密室情報の段階化</h3><p>第一捜査では閂の不可解さだけ。個人調査で自動錠の設計図。第二捜査で21:20に実際に作動したことを確定する。</p><code>効果: プレイヤーが自分で密室を解いた感覚を残せる。</code></article>
+      </div>
+    </section>
+
+    <section id="logic">
+      <div class="section-head"><div><span class="label">06 / Causal chain</span><h2>修正後の因果関係</h2></div><p>この一本線が無理なく読めれば、物語の背骨は成立しています。</p></div>
+      <div class="chain"><div><b>違法な薬品輸送</b><span>船が許可航路を外れ、事故後に鳴海が座標を隠す</span></div><div><b>二つの家族への濡れ衣</b><span>久世船長と御影武が責任を負う</span></div><div><b>月影潮と告白</b><span>薬品汚染の痕跡が残り、鳴海は公表を決意</span></div><div class="last"><b>三時間早い復讐</b><span>告白を知らない椿が雪の吸入器で鳴海を殺す</span></div></div>
+      <div class="decision" style="margin-top:24px"><h3>作者として決める必要があるのは一つだけ</h3><p>鳴海は最後に、雪の吸入器だと<strong>気づいて使ったのか、気づかず使ったのか</strong>。推奨は「気づいたうえで使う」です。鳴海の罪悪感、椿の復讐、タイトルの「勿忘草」が同じ瞬間に重なります。</p></div>
+    </section>
+
+    <section id="sources">
+      <div class="section-head"><div><span class="label">07 / Technical notes</span><h2>技術的な確認</h2></div><p>物語のための確認であり、具体的な毒物調製方法は扱いません。</p></div>
+      <ul class="sources">
+        <li>携帯型の定量噴霧式吸入器は1956年に登場。1989年設定で携帯吸入器があること自体は問題ありません。https://pmc.ncbi.nlm.nih.gov/articles/PMC5278812/</li>
+        <li>手動・液体式の携帯噴霧器はさらに古くから存在し、再利用型の器具という設定も可能です。https://pubmed.ncbi.nlm.nih.gov/16122398/</li>
+        <li>1980年代には足踏み式など、薬液を使うネブライザーも実用されていました。https://pmc.ncbi.nlm.nih.gov/articles/PMC4373464/</li>
+        <li>写真処理でシアン化合物が使われた事実はありますが、化合物の種類と毒性を一括りにはできません。暗室を即死毒の入手先にするより、水質分析用標準液の方が説明しやすいです。https://nepis.epa.gov/Exe/ZyPURL.cgi?Dockey=91012GL5.TXT</li>
+      </ul>
+    </section>
+  </main>
+  <footer>月影島の勿忘草 — narrative reconstruction & consistency review / 2026-08-16</footer>
+</body>
+</html>
