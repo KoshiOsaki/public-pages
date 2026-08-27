@@ -284,6 +284,15 @@
     .page-counter + #fullscreen { margin-left: 0; }
 
     @media (max-width: 760px), (max-height: 620px) { .viewer-head { height: 48px; padding: 0 12px; } .viewer-title { font-size: 12px; } .page { padding: 58px 8px 54px; } .slide { width: min(calc(100vw - 16px), calc((100svh - 112px) * 16 / 9)); } .controls { bottom: 8px; width: min(calc(100vw - 16px), calc((100svh - 112px) * 16 / 9)); } .controls button { width: 38px; height: 38px; } }
+    /* スマホ横画面: 縦が足りないのでヘッダーを畳み、操作バーはスライドへ重ねる */
+    @media (orientation: landscape) and (max-height: 560px) {
+      .viewer-head { display: none; }
+      .page { padding: 6px calc(8px + env(safe-area-inset-right)) 6px calc(8px + env(safe-area-inset-left)); }
+      .slide { width: min(calc(100vw - 16px - env(safe-area-inset-left) - env(safe-area-inset-right)), calc((100svh - 12px) * 16 / 9)); }
+      .controls { left: auto; right: calc(10px + env(safe-area-inset-right)); bottom: calc(10px + env(safe-area-inset-bottom)); width: auto; transform: none; gap: 6px; }
+      .controls button { width: 32px; height: 32px; border-radius: 8px; font-size: 16px; background: rgba(13,24,61,.6); }
+      .page-counter { margin-right: 4px; font-size: 11px; text-shadow: 0 1px 4px rgba(0,0,0,.5); }
+    }
     @media print { @page { size: 16in 9in; margin: 0; } html, body { height: auto; overflow: visible; background: white; } .viewer-head, .controls { display: none; } main { height: auto; overflow: visible; } .page, .page.is-before, .page.is-after, .page.is-active { position: relative; inset: auto; padding: 0; opacity: 1; transform: none; break-after: page; } .slide { width: 16in; height: 9in; box-shadow: none; } }
     @media (prefers-reduced-motion: reduce) { .page { transition: none; } }
   </style>
@@ -378,9 +387,28 @@
     next.addEventListener('click', () => go(current + 1));
     document.querySelector('#fullscreen').addEventListener('click', async () => { if (!document.fullscreenElement) await document.documentElement.requestFullscreen?.(); else await document.exitFullscreen?.(); });
     addEventListener('keydown', (event) => { if (['ArrowRight', 'PageDown', ' '].includes(event.key)) { event.preventDefault(); go(current + 1); } if (['ArrowLeft', 'PageUp'].includes(event.key)) { event.preventDefault(); go(current - 1); } if (event.key === 'Home') { event.preventDefault(); go(0); } if (event.key === 'End') { event.preventDefault(); go(pages.length - 1); } });
-    let touchStartX = 0;
-    addEventListener('touchstart', (event) => { touchStartX = event.changedTouches[0].screenX; }, { passive: true });
-    addEventListener('touchend', (event) => { const delta = touchStartX - event.changedTouches[0].screenX; if (Math.abs(delta) > 60) go(current + (delta > 0 ? 1 : -1)); }, { passive: true });
+    // スワイプ判定は「1本指・横方向が主・素早い動き」に限る。
+    // タップ、ピンチ、縦方向のドラッグではページを送らない。
+    let swipe = null;
+    addEventListener('touchstart', (event) => {
+      if (event.touches.length !== 1) { swipe = null; return; }
+      const touch = event.changedTouches[0];
+      swipe = { x: touch.screenX, y: touch.screenY, time: Date.now() };
+    }, { passive: true });
+    addEventListener('touchmove', (event) => { if (event.touches.length !== 1) swipe = null; }, { passive: true });
+    addEventListener('touchcancel', () => { swipe = null; }, { passive: true });
+    addEventListener('touchend', (event) => {
+      if (!swipe || event.touches.length) { swipe = null; return; }
+      const touch = event.changedTouches[0];
+      const dx = swipe.x - touch.screenX;
+      const dy = Math.abs(swipe.y - touch.screenY);
+      const elapsed = Date.now() - swipe.time;
+      swipe = null;
+      if (Math.abs(dx) < 80) return;          // 短い動き＝タップ扱い
+      if (Math.abs(dx) < dy * 1.8) return;    // 縦方向が強い動きは無視
+      if (elapsed > 700) return;              // ゆっくりした長押しドラッグは無視
+      go(current + (dx > 0 ? 1 : -1));
+    }, { passive: true });
     const requested = Number(location.hash.match(/slide-(\d+)/)?.[1]);
     go(requested ? requested - 1 : 0);
   </script>
