@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>KAIDO — 期限を怪獣との距離で見る macOS アプリ</title>
+  <style>
+    :root { --bg:#f7f6f3; --card:#fff; --ink:#1f2328; --muted:#6b7280; --line:#e3e1dc; --accent:#347f8b; }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg:#0f1418; --card:#171d22; --ink:#e6e9ea; --muted:#93a0a6; --line:#2a3239; --accent:#78d3d4; }
+    }
+    * { box-sizing:border-box; }
+    body { margin:0; padding:56px 20px 96px; background:var(--bg); color:var(--ink);
+           font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif; line-height:1.8; }
+    main { width:min(760px,100%); margin:0 auto; }
+    h1 { margin:0 0 6px; font-size:28px; letter-spacing:.02em; }
+    .lead { margin:0 0 40px; color:var(--muted); font-size:14px; }
+    h2 { margin:36px 0 12px; font-size:13px; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); }
+    p { margin:0 0 14px; }
+    ul { margin:0 0 14px; padding-left:1.2em; }
+    li { margin:0 0 6px; }
+    code, pre { font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:13px; }
+    pre { padding:14px 16px; background:var(--card); border:1px solid var(--line);
+          border-radius:10px; overflow-x:auto; }
+    a { color:var(--accent); }
+    footer { margin-top:48px; padding-top:20px; border-top:1px solid var(--line);
+             color:var(--muted); font-size:13px; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>KAIDO</h1>
+    <p class="lead">その日の締め切りを、怪獣に追われる一本道として見る macOS アプリ。</p>
+
+    <h2>これは何か</h2>
+    <p>
+      画面の上端に細い帯として貼り付き、いま抱えている作業を道の上の人として並べます。
+      締め切りが近いものほど左（怪獣の側）に立ち、怪獣は現在時刻として右へ進みます。
+      追いつかれる前に終わらせるか、期限を延ばすか、後回しにするかを決める、という道具です。
+    </p>
+    <ul>
+      <li>作業ごとの期限を一本の時間軸に並べる</li>
+      <li>「後で」に送った分だけを別窓の一覧に貯める</li>
+      <li>Google カレンダーをつなぐと、その日の予定が道の上に帯として重なる</li>
+    </ul>
+
+    <h2>インストール</h2>
+    <p>macOS 11 以降。ターミナルで次を実行します。</p>
+    <pre><code>curl -fsSL https://raw.githubusercontent.com/KoshiOsaki/kaido/main/install.sh | bash</code></pre>
+    <p>
+      配布物とインストーラは
+      <a href="https://github.com/KoshiOsaki/kaido">GitHub</a> に置いてあります。
+    </p>
+
+    <h2>カレンダー連携</h2>
+    <p>
+      予定を道に重ねたいときだけ、盤面の「カレンダー連携」ボタンから Google アカウントで
+      認証します。要求する権限は<strong>カレンダーの閲覧のみ</strong>
+      （<code>calendar.readonly</code>）で、予定の作成・変更・削除はできません。
+    </p>
+    <p>
+      取得した予定はお使いの Mac の中だけで処理し、KAIDO の開発者を含む誰にも送信しません。
+      詳しくは<a href="privacy.html">プライバシーポリシー</a>を参照してください。
+      連携をやめたいときは
+      <a href="https://myaccount.google.com/permissions">Google アカウントの「アプリとサービス」</a>
+      からアクセス権を削除できます。
+    </p>
+
+    <h2>問い合わせ</h2>
+    <p>
+      不具合・要望は <a href="https://github.com/KoshiOsaki/kaido/issues">GitHub の Issues</a>、
+      または <a href="mailto:osaki36dg@gmail.com">osaki36dg@gmail.com</a> まで。
+    </p>
+
+    <footer>
+      <a href="privacy.html">プライバシーポリシー</a> ·
+      <a href="terms.html">利用規約</a> ·
+      <a href="https://github.com/KoshiOsaki/kaido">GitHub</a>
+    </footer>
+  </main>
+</body>
+</html>
