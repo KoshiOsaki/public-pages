@@ -165,9 +165,9 @@ svg text{font-family:var(--body);font-weight:700}
 
   <!-- 最終任務 -->
   <section class="screen" id="s-m3">
-    <div style="display:flex;justify-content:space-between;align-items:center"><h2>最終任務　城を せめよ</h2><span style="font-size:13px">↑ きた</span></div>
+    <div style="display:flex;justify-content:space-between;align-items:center"><h2>最終任務　城を せめよ</h2></div>
     <div class="mapwrap" id="map">
-      <svg viewBox="0 0 360 360" role="img" aria-label="大庭城と沼、ふちの4つのつつみ（ちゃいろのテープ）">
+      <svg viewBox="0 0 360 360" role="img" aria-label="大庭城と沼、ふちの4つのつつみ（○△□☆のしるし）">
         <rect width="360" height="360" fill="var(--grass)"/>
         <g class="hit" id="t-swamp"><rect x="36" y="36" width="288" height="288" rx="10" fill="var(--swamp)"/></g>
         <g stroke="#56632e" stroke-width="2.5" stroke-linecap="round" pointer-events="none">
@@ -181,18 +181,18 @@ svg text{font-family:var(--body);font-weight:700}
           <text x="180" y="220" text-anchor="middle" font-size="12" fill="var(--ink)">おおばじょう</text>
         </g>
         <!-- つつみ＝ふちに貼る茶色テープ4本 -->
-        <g class="hit" id="t-N" role="button" tabindex="0" aria-label="きたの つつみ"><rect class="tape" x="36" y="8" width="288" height="24" rx="3" fill="var(--tape)"/></g>
-        <g class="hit" id="t-S" role="button" tabindex="0" aria-label="みなみの つつみ"><rect class="tape" x="36" y="328" width="288" height="24" rx="3" fill="var(--tape)"/></g>
-        <g class="hit" id="t-W" role="button" tabindex="0" aria-label="にしの つつみ"><rect class="tape" x="8" y="36" width="24" height="288" rx="3" fill="var(--tape)"/></g>
-        <g class="hit" id="t-E" role="button" tabindex="0" aria-label="ひがしの つつみ"><rect class="tape" x="328" y="36" width="24" height="288" rx="3" fill="var(--tape)"/></g>
-        <g fill="var(--paper)" font-size="11" text-anchor="middle" pointer-events="none">
-          <text x="180" y="24">つつみ</text><text x="180" y="344">つつみ</text>
-          <text x="20" y="184" transform="rotate(-90 20 180)">つつみ</text><text x="340" y="184" transform="rotate(90 340 180)">つつみ</text>
+        <!-- Webの地図は方位なし・90°まわしてある（上=□西 右=○北 下=△東 左=☆南）。シートのマークで対応させる -->
+        <g class="hit" id="t-W" role="button" tabindex="0" aria-label="□の つつみ"><rect class="tape" x="36" y="8" width="288" height="24" rx="3" fill="var(--tape)"/></g>
+        <g class="hit" id="t-E" role="button" tabindex="0" aria-label="△の つつみ"><rect class="tape" x="36" y="328" width="288" height="24" rx="3" fill="var(--tape)"/></g>
+        <g class="hit" id="t-S" role="button" tabindex="0" aria-label="☆の つつみ"><rect class="tape" x="8" y="36" width="24" height="288" rx="3" fill="var(--tape)"/></g>
+        <g class="hit" id="t-N" role="button" tabindex="0" aria-label="○の つつみ"><rect class="tape" x="328" y="36" width="24" height="288" rx="3" fill="var(--tape)"/></g>
+        <g fill="#fff" font-size="18" text-anchor="middle" dominant-baseline="central" pointer-events="none">
+          <text x="180" y="20">□</text><text x="180" y="340">△</text><text x="20" y="180">☆</text><text x="340" y="180">○</text>
         </g>
-        <rect class="dug" id="dug" x="168" y="326" width="24" height="28" fill="var(--mud)" pointer-events="none"/>
+        <rect class="dug" id="dug" x="6" y="168" width="28" height="24" fill="var(--mud)" pointer-events="none"/>
       </svg>
     </div>
-    <div class="card msg"><span class="who" id="who3">おばあちゃん</span><span id="msg3">アイテムを えらんで、つかう ばしょを タップしてね。</span></div>
+    <div class="card msg"><span class="who" id="who3">おばあちゃん</span><span id="msg3">どうぐを ひとつ えらんで、ほる つつみを タップせよ。つつみの しるしは シートと おなじじゃ。</span></div>
     <div class="label"><span>ITEM（ひとつ えらぶ）</span><span id="sel">えらんでいない</span></div>
     <div class="items" role="group" aria-label="アイテム">
       <button data-item="bomb" aria-pressed="false"><svg viewBox="0 0 40 40"><circle cx="18" cy="24" r="12" fill="#2b1d12"/><path d="M24,13 q6,-8 10,-6" stroke="#8a5f34" stroke-width="3" fill="none"/><circle cx="35" cy="7" r="3" fill="#f6bb3c"/></svg>ばくだん</button>
@@ -502,7 +502,7 @@ $("b-m2").addEventListener("click", () => {
 
 // ---- 最終任務：スコップで みなみの つつみ ----
 const NAMES = {bomb:"ばくだん", ladder:"はしご", shovel:"スコップ", torch:"たいまつ"};
-const PLACE = {N:"きたの つつみ", E:"ひがしの つつみ", S:"みなみの つつみ", W:"にしの つつみ"};
+const PLACE = {N:"○の つつみ", E:"△の つつみ", S:"☆の つつみ", W:"□の つつみ"};
 let item = null, busy = false;
 function say(text, who = "おばあちゃん"){ $("who3").textContent = who; $("msg3").textContent = text; }
 function shake(){ const m = $("map"); m.classList.remove("shake"); void m.offsetWidth; m.classList.add("shake"); }
@@ -512,7 +512,7 @@ function select(it){
   $("sel").textContent = it ? `${NAMES[it]} を えらんだ` : "えらんでいない";
   if (it) say(`${NAMES[it]}を もった。つかう ばしょを タップしよう。`, "じぶん");
 }
-function resetM3(){ busy = false; select(null); $("dug").classList.remove("on"); say("アイテムを えらんで、つかう ばしょを タップしてね。"); }
+function resetM3(){ busy = false; select(null); $("dug").classList.remove("on"); say("どうぐを ひとつ えらんで、ほる つつみを タップせよ。つつみの しるしは シートと おなじじゃ。"); }
 function react(place){
   if (busy) return;
   if (!item) return say("さきに したの アイテムを ひとつ えらんでね。");
@@ -523,7 +523,7 @@ function react(place){
   if (place === "N") return say("ほってみたけど、みずが うごかない…。きたは たかい ところ。みずは ひくい ほうへ ながれるんじゃ。");
   if (place === "E" || place === "W") return say(`${PLACE[place]}を ほったけど、みずは ちょろちょろ しか でない。もっと ひくい ところは どこかの？`);
   busy = true; t1 = Date.now(); $("dug").classList.add("on");
-  say("みなみの つつみに スコップじゃ！ よく みつけたのう。");
+  say("みなみの ☆の つつみに スコップじゃ！ よく みつけたのう。");
   setTimeout(() => go("m-end"), 1200);
 }
 const targets = {"t-N":"N","t-E":"E","t-S":"S","t-W":"W","t-castle":"castle","t-swamp":"swamp"};
