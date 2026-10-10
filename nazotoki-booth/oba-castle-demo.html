@@ -55,7 +55,28 @@ h2{font-size:20px}
 
 /* 任務1 入力 */
 .answer{display:flex;align-items:center;justify-content:center;gap:8px;font-size:22px;color:var(--ink);flex-wrap:wrap}
-.answer input{width:64px;height:64px;font:inherit;font-size:30px;text-align:center;border:3px solid var(--wood-hi);border-radius:10px;background:#fff;color:var(--ink)}
+.answer .word{display:flex;gap:4px}
+.answer input{width:min(50px,13vw);height:min(56px,15vw);padding:0;font:inherit;font-size:26px;text-align:center;border:3px solid var(--wood-hi);border-radius:10px;background:#fff;color:var(--ink)}
+.nick input{width:100%;font:inherit;font-size:22px;padding:10px 12px;border:3px solid var(--wood-hi);border-radius:10px;background:#fff;color:var(--ink)}
+[hidden]{display:none!important}
+
+/* きねん さつえい */
+.cam{position:relative;aspect-ratio:3/4;border-radius:14px;overflow:hidden;background:#000}
+.cam video,.cam canvas{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.cam video{transform:scaleX(-1)}
+.count{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--display);font-size:120px;color:#fff;text-shadow:0 4px 16px rgba(0,0,0,.7);pointer-events:none}
+.count:empty{display:none}
+.flash{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none}
+.flash.on{animation:flash .6s ease-out}
+@keyframes flash{0%{opacity:1}100%{opacity:0}}
+.camerr{position:absolute;left:16px;right:16px;top:42%;text-align:center;color:#fff;font-size:14px;line-height:1.6}
+.row{display:flex;gap:10px}
+.row .btn{min-width:0;flex:1}
+.photo-out{width:100%;border-radius:12px;display:block;border:4px solid var(--wood-hi)}
+.share{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.share a,.share button{font:inherit;font-size:14px;text-align:center;text-decoration:none;color:var(--ink);background:var(--paper);border:0;border-radius:12px;padding:12px 8px;cursor:pointer}
+.share .wide{grid-column:1/-1;background:var(--btn);color:var(--btn-ink)}
+.ctime{font-size:15px;color:#d9c7a2}
 .result{min-height:28px;text-align:center;font-size:15px}
 .result.ng{color:#ffb3a8}
 .hint{font-size:13px;color:#d9c7a2;text-align:center}
@@ -102,24 +123,36 @@ svg text{font-family:var(--body);font-weight:700}
     <div class="kicker">HAPPY FESTIVAL 湘南大庭　なぞときブース</div>
     <h1>大庭城<br>攻略の密命</h1>
     <div class="seal">密命</div>
-    <button class="btn" data-go="m-open">はじめる</button>
+    <button class="btn" data-go="name">はじめる</button>
+  </section>
+
+  <!-- ニックネーム -->
+  <section class="screen" id="s-name">
+    <h2>なまえを おしえて</h2>
+    <div class="card msg"><span class="who">ぶしょう</span><span>密命を うける ものよ。なまえ（ニックネーム）を かくのじゃ。</span></div>
+    <div class="card nick">
+      <form id="f-name" autocomplete="off"><input id="nick" maxlength="10" placeholder="れい：たろう" aria-label="ニックネーム"></form>
+    </div>
+    <div class="result ng" id="r-name" role="status"></div>
+    <button class="btn" form="f-name" type="submit">けってい</button>
+    <div class="hint">しゃしんと クリアがめんに でるよ（10もじまで）</div>
   </section>
 
   <!-- 任務1 -->
   <section class="screen" id="s-m1">
     <h2>任務1　なにを ぬく？</h2>
-    <div class="card msg"><span class="who">ぶしょう</span><span>キットの 2まいの なぞを といて、こたえを かんじで いれよ。</span></div>
+    <div class="card msg"><span class="who">ぶしょう</span><span><span class="nickname"></span>どの、キットの 2まいの なぞを といて、こたえを ひらがなで いれよ。</span></div>
     <div class="card">
       <form class="answer" id="f-m1" autocomplete="off">
-        <input id="a1" maxlength="2" aria-label="1つめの こたえ" inputmode="text">
+        <span class="word"><input class="kana" aria-label="1つめの こたえ 1もじめ"><input class="kana" aria-label="1つめの こたえ 2もじめ"></span>
         <span>の</span>
-        <input id="a2" maxlength="2" aria-label="2つめの こたえ" inputmode="text">
+        <span class="word"><input class="kana" aria-label="2つめの こたえ 1もじめ"><input class="kana" aria-label="2つめの こたえ 2もじめ"></span>
         <span>を ぬく</span>
       </form>
     </div>
     <div class="result" id="r-m1" role="status"></div>
     <button class="btn" form="f-m1" type="submit">こたえる</button>
-    <div class="hint">ひらがなでも OK</div>
+    <div class="hint">ひらがな 1マス 1もじ</div>
   </section>
 
   <!-- 任務2 おばあちゃん -->
@@ -170,14 +203,41 @@ svg text{font-family:var(--body);font-weight:700}
   </section>
 
   <!-- クリア -->
+  <!-- きねん さつえい（スキップなし） -->
+  <section class="screen" id="s-photo">
+    <h2>きねん さつえい</h2>
+    <div class="card msg"><span class="who">ぶしょう</span><span>みごとじゃ、<span class="nickname"></span>どの！ 密命たっせいの あかしに しゃしんを のこすのじゃ。</span></div>
+    <div class="cam">
+      <video id="video" playsinline muted autoplay></video>
+      <canvas id="ov" width="900" height="1200"></canvas>
+      <canvas id="shot" width="900" height="1200" hidden></canvas>
+      <div class="camerr" id="camerr" hidden>カメラが つかえないようです。<br>このまま さつえいすると しゃしん なしの ほうしょうじょうに なります。</div>
+      <div class="count" id="count"></div>
+      <div class="flash" id="flash"></div>
+    </div>
+    <button class="btn" id="b-shoot">さつえい する</button>
+    <div class="row" id="after" hidden>
+      <button class="btn sub" id="b-retake">とりなおす</button>
+      <button class="btn" id="b-photo-ok">これで OK</button>
+    </div>
+  </section>
+
+  <!-- クリア -->
   <section class="screen clear" id="s-clear">
     <div class="stamp">密命 たっせい</div>
-    <h1>おおばじょう<br>こうりゃく！</h1>
-    <div class="card">この がめんを ブースの スタッフに みせてね。</div>
+    <img class="photo-out" id="final-img" alt="きねんしゃしん">
+    <div class="ctime" id="ctime"></div>
+    <div class="card"><b>ブースに もどって</b>、この がめんを スタッフに みせてね。</div>
+    <div class="share">
+      <button class="wide" id="sh-native" hidden>しゃしんを シェア</button>
+      <a id="sh-x" target="_blank" rel="noopener">X で シェア</a>
+      <a id="sh-line" target="_blank" rel="noopener">LINE で おくる</a>
+      <a class="wide" id="sh-save" download="oba-castle.jpg">しゃしんを ほぞん</a>
+    </div>
     <button class="btn sub" data-go="title">さいしょから</button>
   </section>
 
-  <div class="dev">試作：<button data-go="title">タイトル</button><button data-go="m1">任務1</button><button data-go="m2">任務2</button><button data-go="m3">最終任務</button><button data-go="clear">クリア</button></div>
+  <div class="dev">試作：<button data-go="title">タイトル</button><button data-go="name">なまえ</button><button data-go="m1">任務1</button><button data-go="m2">任務2</button><button data-go="m3">最終任務</button><button data-go="photo">さつえい</button><button data-go="clear">クリア</button></div>
 </div>
 
 <!-- ムービー枠 -->
@@ -197,10 +257,13 @@ const MOVIES = {
   "m-open": { no:"ムービー1", what:"ぼうとうの ものがたり<br>（500ねんまえ、おおばじょうを せめる 密命）", next:"m1" },
   "m-m1":   { no:"ムービー2", what:"任務1 せいかい・かいせつ<br>（ぬまの みずを ぬけば せめこめる。でも どうやって？）", next:"m2" },
   "m-m2":   { no:"ムービー3", what:"おばあちゃんが ひみつを おしえる<br>（ぼたもちと ひきかえに）", next:"m3" },
-  "m-end":  { no:"ムービー4", what:"エンディング<br>（つつみを ほる → みずが ぬける → せめいる → 城がもえる → いまは こうえん）", next:"clear" },
+  "m-end":  { no:"ムービー4", what:"エンディング<br>（つつみを ほる → みずが ぬける → せめいる → 城がもえる → いまは こうえん）", next:"photo" },
 };
 const MOVIE_MS = 3000;
-const STEP = { title:-1, m1:0, m2:1, m3:2, clear:3 };
+const STEP = { title:-1, name:-1, m1:0, m2:1, m3:2, photo:3, clear:3 };
+const HASHTAGS = ["大庭城攻略の密命", "HAPPYFESTIVAL湘南大庭"]; // 仮
+let nick = "", t0 = null, t1 = null, photoURL = "", photoBlob = null;
+try { nick = localStorage.getItem("oba-nick") || ""; } catch {}
 
 const $ = id => document.getElementById(id);
 let movieTimer = null;
@@ -210,6 +273,11 @@ function go(to){
   document.querySelectorAll(".screen").forEach(s => s.classList.toggle("on", s.id === "s-" + to));
   document.querySelectorAll("#steps i").forEach((d, i) => d.classList.toggle("on", i <= STEP[to]));
   window.scrollTo(0, 0);
+  document.querySelectorAll(".nickname").forEach(e => e.textContent = nick || "ななし");
+  if (to !== "photo") stopCam();
+  if (to === "name") { $("nick").value = nick; $("r-name").textContent = ""; }
+  if (to === "photo") startCam();
+  if (to === "clear") renderClear();
   if (to === "m1") resetM1();
   if (to === "m2") resetM2();
   if (to === "m3") resetM3();
@@ -229,19 +297,137 @@ function playMovie(key){
 document.querySelectorAll("[data-go]").forEach(b => b.addEventListener("click", () => go(b.dataset.go)));
 
 // ---- 任務1：ぬま の みず を ぬく ----
-const OK1 = ["沼","ぬま","ヌマ"], OK2 = ["水","みず","ミズ"];
-function resetM1(){ $("a1").value = ""; $("a2").value = ""; $("r-m1").textContent = ""; }
+// ひらがな固定・1マス1もじ。IMEで「ぬま」とまとめて入れても次のマスへ流す
+const OK1 = "ぬま", OK2 = "みず";
+const kanas = [...document.querySelectorAll(".kana")];
+const toHira = s => s.replace(/[ァ-ヶ]/g, c => String.fromCharCode(c.charCodeAt(0) - 0x60));
+function spread(i){
+  const raw = toHira(kanas[i].value), chars = [...raw].filter(c => /[ぁ-ゖ]/.test(c));
+  $("r-m1").className = "result ng";
+  $("r-m1").textContent = raw && chars.length < [...raw].length ? "ひらがなで いれてね" : "";
+  kanas[i].value = chars[0] || "";
+  let j = i + 1;
+  for (const c of chars.slice(1)) { if (j >= kanas.length) break; kanas[j++].value = c; }
+  if (chars.length) (kanas[Math.min(j, kanas.length - 1)]).focus();
+}
+kanas.forEach((el, i) => {
+  el.addEventListener("input", e => { if (!e.isComposing) spread(i); });
+  el.addEventListener("compositionend", () => spread(i));
+  el.addEventListener("blur", () => spread(i));
+  el.addEventListener("keydown", e => { if (e.key === "Backspace" && !el.value && i > 0) kanas[i - 1].focus(); });
+});
+function resetM1(){ kanas.forEach(k => k.value = ""); $("r-m1").textContent = ""; }
 $("f-m1").addEventListener("submit", e => {
   e.preventDefault();
-  const a = $("a1").value.trim(), b = $("a2").value.trim(), r = $("r-m1");
+  const v = kanas.map(k => k.value), a = v[0] + v[1], b = v[2] + v[3], r = $("r-m1");
   r.className = "result";
-  if (OK1.includes(a) && OK2.includes(b)) { r.textContent = "せいかい！"; setTimeout(() => go("m-m1"), 700); return; }
+  if (v.some(c => !c)) { r.classList.add("ng"); r.textContent = "4つの マスを ぜんぶ うめよう"; return; }
+  if (a === OK1 && b === OK2) { r.textContent = "せいかい！"; setTimeout(() => go("m-m1"), 700); return; }
   r.classList.add("ng");
-  if (OK1.includes(b) && OK2.includes(a)) r.textContent = "おしい！ じゅんばんが ぎゃくだ。";
-  else if (OK1.includes(a)) r.textContent = "1つめは あっている。2つめの なぞを もういちど。";
-  else if (OK2.includes(b)) r.textContent = "2つめは あっている。1つめの なぞを もういちど。";
+  if (a === OK2 && b === OK1) r.textContent = "おしい！ じゅんばんが ぎゃくだ。";
+  else if (a === OK1) r.textContent = "1つめは あっている。2つめの なぞを もういちど。";
+  else if (b === OK2) r.textContent = "2つめは あっている。1つめの なぞを もういちど。";
   else r.textContent = "ちがうようだ。2まいの なぞを もういちど みてみよう。";
 });
+
+// ---- ニックネーム ----
+$("f-name").addEventListener("submit", e => {
+  e.preventDefault();
+  const v = $("nick").value.trim();
+  if (!v) { $("r-name").textContent = "なまえを いれてね"; return; }
+  nick = v; try { localStorage.setItem("oba-nick", v); } catch {}
+  t0 = Date.now(); t1 = null; photoURL = ""; photoBlob = null;
+  go("m-open");
+});
+
+// ---- きねん さつえい（プリクラふう 3・2・1） ----
+const W = 900, H = 1200;
+let stream = null;
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const clearTime = () => {
+  if (!t0 || !t1) return "--";
+  const s = Math.round((t1 - t0) / 1000);
+  return `${Math.floor(s / 60)}ふん${String(s % 60).padStart(2, "0")}びょう`;
+};
+const today = () => { const d = new Date(); return `${d.getFullYear()}.${d.getMonth() + 1}.${d.getDate()}`; };
+async function fontsReady(){
+  try { await Promise.all([document.fonts.load('56px "Dela Gothic One"'), document.fonts.load('700 40px "Zen Maru Gothic"')]); } catch {}
+}
+function drawFrame(ctx){
+  const DISP = '"Dela Gothic One","Hiragino Sans",sans-serif', BODY = '"Zen Maru Gothic","Hiragino Maru Gothic ProN",sans-serif';
+  ctx.textAlign = "center"; ctx.textBaseline = "middle";
+  ctx.lineWidth = 36; ctx.strokeStyle = "#5a3b24"; ctx.strokeRect(18, 18, W - 36, H - 36);
+  ctx.fillStyle = "rgba(58,38,24,.88)"; ctx.fillRect(36, 36, W - 72, 120);
+  ctx.fillStyle = "#f3e6c8"; ctx.font = `56px ${DISP}`; ctx.fillText("大庭城攻略の密命", W / 2, 98);
+  const by = H - 36 - 240;
+  ctx.fillStyle = "rgba(58,38,24,.88)"; ctx.fillRect(36, by, W - 72, 240);
+  ctx.fillStyle = "#e8892e"; ctx.font = `60px ${DISP}`; ctx.fillText("密命たっせい！", W / 2, by + 60);
+  ctx.fillStyle = "#f3e6c8"; ctx.font = `700 46px ${BODY}`; ctx.fillText(`${nick || "ななし"} どの`, W / 2, by + 128);
+  ctx.font = `700 28px ${BODY}`; ctx.fillText(`クリアタイム ${clearTime()}　${today()}　HAPPY FESTIVAL in 湘南大庭`, W / 2, by + 192);
+  ctx.save(); ctx.translate(W - 140, 270); ctx.rotate(-0.15);
+  ctx.fillStyle = "#b8322a"; ctx.beginPath(); ctx.arc(0, 0, 86, 0, Math.PI * 2); ctx.fill();
+  ctx.strokeStyle = "#fff"; ctx.lineWidth = 4; ctx.beginPath(); ctx.arc(0, 0, 74, 0, Math.PI * 2); ctx.stroke();
+  ctx.fillStyle = "#fff"; ctx.font = `44px ${DISP}`; ctx.fillText("密命", 0, -24); ctx.fillText("達成", 0, 30);
+  ctx.restore();
+}
+function photoUI(shot){
+  $("shot").hidden = !shot; $("ov").hidden = shot; $("video").hidden = shot;
+  $("b-shoot").hidden = shot; $("after").hidden = !shot; $("b-shoot").disabled = false;
+}
+async function startCam(){
+  photoUI(false);
+  await fontsReady();
+  const ov = $("ov").getContext("2d"); ov.clearRect(0, 0, W, H); drawFrame(ov);
+  if (stream) return;
+  try {
+    stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user", width: { ideal: 1280 }, height: { ideal: 960 } }, audio: false });
+    $("video").srcObject = stream; $("camerr").hidden = true;
+  } catch { $("camerr").hidden = false; }
+}
+function stopCam(){ if (stream) stream.getTracks().forEach(t => t.stop()); stream = null; }
+$("b-shoot").addEventListener("click", async () => {
+  $("b-shoot").disabled = true;
+  for (const n of [3, 2, 1]) { $("count").textContent = n; await sleep(1000); }
+  $("count").textContent = "";
+  const f = $("flash"); f.classList.remove("on"); void f.offsetWidth; f.classList.add("on");
+  const c = $("shot"), ctx = c.getContext("2d"), v = $("video");
+  ctx.clearRect(0, 0, W, H);
+  if (stream && v.videoWidth) {
+    const s = Math.max(W / v.videoWidth, H / v.videoHeight), dw = v.videoWidth * s, dh = v.videoHeight * s;
+    ctx.save(); ctx.translate(W, 0); ctx.scale(-1, 1); ctx.drawImage(v, (W - dw) / 2, (H - dh) / 2, dw, dh); ctx.restore();
+  } else {
+    const g = ctx.createLinearGradient(0, 0, 0, H); g.addColorStop(0, "#8fae6a"); g.addColorStop(1, "#7b7044");
+    ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+  }
+  drawFrame(ctx);
+  photoUI(true);
+});
+$("b-retake").addEventListener("click", () => photoUI(false));
+$("b-photo-ok").addEventListener("click", () => {
+  const c = $("shot");
+  photoURL = c.toDataURL("image/jpeg", 0.9);
+  c.toBlob(b => { photoBlob = b; go("clear"); }, "image/jpeg", 0.9);
+});
+
+// ---- クリア・シェア ----
+function renderClear(){
+  $("final-img").hidden = !photoURL; if (photoURL) $("final-img").src = photoURL;
+  $("ctime").textContent = `${nick || "ななし"} どの　クリアタイム ${clearTime()}`;
+  const text = `大庭城攻略の密命を たっせい！ クリアタイム ${clearTime()}`;
+  const url = location.href.split("#")[0];
+  const tags = HASHTAGS.map(t => "#" + t).join(" ");
+  $("sh-x").href = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&hashtags=${encodeURIComponent(HASHTAGS.join(","))}&url=${encodeURIComponent(url)}`;
+  $("sh-line").href = `https://line.me/R/share?text=${encodeURIComponent(text + "\n" + url)}`;
+  $("sh-save").hidden = !photoURL; $("sh-save").href = photoURL;
+  $("sh-native").hidden = !(navigator.share && photoBlob);
+  $("sh-native").onclick = async () => {
+    const file = new File([photoBlob], "oba-castle.jpg", { type: "image/jpeg" });
+    try {
+      if (navigator.canShare && navigator.canShare({ files: [file] })) await navigator.share({ files: [file], text: `${text} ${tags}` });
+      else await navigator.share({ text: `${text} ${tags}`, url });
+    } catch {}
+  };
+}
 
 // ---- 任務2：ぼたもちを もつ おばあちゃん ----
 const FOOD = {
@@ -336,7 +522,7 @@ function react(place){
   if (place === "castle" || place === "swamp") return say("ぬまの どろに あしを とられて すすめない。まずは みずを ぬこう。");
   if (place === "N") return say("ほってみたけど、みずが うごかない…。きたは たかい ところ。みずは ひくい ほうへ ながれるんじゃ。");
   if (place === "E" || place === "W") return say(`${PLACE[place]}を ほったけど、みずは ちょろちょろ しか でない。もっと ひくい ところは どこかの？`);
-  busy = true; $("dug").classList.add("on");
+  busy = true; t1 = Date.now(); $("dug").classList.add("on");
   say("みなみの つつみに スコップじゃ！ よく みつけたのう。");
   setTimeout(() => go("m-end"), 1200);
 }
