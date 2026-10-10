@@ -1,0 +1,352 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>大庭城攻略の密命</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Zen+Maru+Gothic:wght@500;700&display=swap">
+<style>
+/* 単一テーマ（ゲーム画面）。木の枠＋紙のメッセージ欄 */
+:root{
+  color-scheme:dark;
+  --wood:#3a2618; --wood-hi:#5a3b24; --paper:#f3e6c8; --ink:#2b1d12; --btn:#e8892e; --btn-ink:#fff;
+  --grass:#8fae6a; --swamp:#7b7044; --mud:#6e5538; --tape:#a87a4a; --tape-hi:#c09062; --stone:#8a8d92;
+  --ok:#3f8f4e; --ng:#c0392b;
+  --display:"Dela Gothic One","Hiragino Sans",sans-serif;
+  --body:"Zen Maru Gothic","Hiragino Maru Gothic ProN","Hiragino Sans",sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%}
+body{background:var(--wood);color:var(--paper);font-family:var(--body);font-weight:700;padding:12px 16px 24px}
+.app{max-width:440px;margin:0 auto}
+.screen{display:none;flex-direction:column;gap:12px}
+.screen.on{display:flex}
+h1,h2{font-family:var(--display);font-weight:400;margin:0;letter-spacing:.04em}
+h2{font-size:20px}
+.steps{display:flex;gap:6px;justify-content:center;margin-bottom:10px}
+.steps i{width:28px;height:6px;border-radius:3px;background:var(--wood-hi)}
+.steps i.on{background:var(--btn)}
+.card{background:var(--paper);color:var(--ink);border-radius:14px;padding:14px 16px;line-height:1.7;font-size:16px}
+.msg{display:flex;gap:10px;align-items:flex-start;min-height:72px}
+.msg .who{flex:none;background:var(--wood);color:var(--paper);border-radius:8px;padding:2px 8px;font-size:12px;margin-top:4px}
+.btn{font:inherit;font-size:17px;background:var(--btn);color:var(--btn-ink);border:0;border-radius:999px;padding:12px 20px;cursor:pointer;align-self:center;min-width:200px}
+.btn:focus-visible,button:focus-visible,input:focus-visible,.hit:focus-visible{outline:3px solid #ffd27a;outline-offset:2px}
+.btn.sub{background:transparent;border:2px solid var(--wood-hi);color:var(--paper);font-size:14px;padding:8px 16px;min-width:0}
+
+/* タイトル */
+.title{min-height:80vh;justify-content:center;text-align:center;gap:20px}
+.title .kicker{color:#d9c7a2;font-size:14px}
+.title h1{font-size:40px;line-height:1.25}
+.title .seal{width:96px;height:96px;margin:0 auto;border-radius:50%;background:#b8322a;color:#fff;display:grid;place-items:center;font-family:var(--display);font-size:30px;transform:rotate(-8deg)}
+
+/* ムービー枠（本番は Seedance 動画に差し替え） */
+.movie{position:fixed;inset:0;background:#000;color:#fff;display:none;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px 16px;text-align:center;z-index:10}
+.movie.on{display:flex}
+.movie .frame{width:100%;max-width:440px;aspect-ratio:9/16;max-height:62vh;border:2px dashed #555;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:16px}
+.movie .no{font-size:13px;color:#aaa;letter-spacing:.1em}
+.movie .big{font-size:20px}
+.movie .what{font-size:14px;color:#ccc;line-height:1.6}
+.movie .bar{width:70%;height:4px;background:#333;border-radius:2px;overflow:hidden}
+.movie .bar i{display:block;height:100%;width:0;background:var(--btn)}
+.movie.run .bar i{animation:fill var(--dur,3s) linear forwards}
+@keyframes fill{to{width:100%}}
+.movie .skip{font:inherit;font-size:13px;background:none;color:#aaa;border:1px solid #555;border-radius:999px;padding:6px 14px;cursor:pointer}
+
+/* 任務1 入力 */
+.answer{display:flex;align-items:center;justify-content:center;gap:8px;font-size:22px;color:var(--ink);flex-wrap:wrap}
+.answer input{width:64px;height:64px;font:inherit;font-size:30px;text-align:center;border:3px solid var(--wood-hi);border-radius:10px;background:#fff;color:var(--ink)}
+.result{min-height:28px;text-align:center;font-size:15px}
+.result.ng{color:#ffb3a8}
+.hint{font-size:13px;color:#d9c7a2;text-align:center}
+
+/* おばあちゃん選び */
+.village{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.villager{font:inherit;font-size:12px;color:var(--ink);background:var(--paper);border:3px solid transparent;border-radius:12px;padding:6px 2px 8px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px}
+.villager[aria-pressed="true"]{border-color:var(--btn);background:#fff3dc}
+.villager svg{width:100%;max-width:96px;height:auto}
+.villager.out{opacity:.35}
+
+/* 最終任務 */
+.mapwrap{position:relative;border:6px solid var(--wood-hi);border-radius:14px;overflow:hidden;background:var(--grass)}
+.mapwrap svg{display:block;width:100%;height:auto}
+svg text{font-family:var(--body);font-weight:700}
+.hit{cursor:pointer}
+.hit:hover .tape{fill:var(--tape-hi)}
+.label{display:flex;justify-content:space-between;font-size:12px;color:#d9c7a2}
+.items{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.items button{font:inherit;color:var(--ink);background:var(--paper);border:3px solid transparent;border-radius:12px;padding:6px 4px;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:13px;cursor:pointer}
+.items button[aria-pressed="true"]{border-color:var(--btn);background:#fff3dc}
+.items svg{width:36px;height:36px}
+.dug{opacity:0;transition:opacity .4s}
+.dug.on{opacity:1}
+.shake{animation:shake .35s}
+@keyframes shake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+
+/* クリア */
+.clear{min-height:80vh;justify-content:center;text-align:center;gap:18px}
+.clear h1{font-size:34px}
+.clear .stamp{font-family:var(--display);font-size:22px;color:#fff;background:#b8322a;border-radius:10px;padding:10px 18px;align-self:center;transform:rotate(-4deg)}
+
+.dev{margin-top:28px;border-top:1px dashed var(--wood-hi);padding-top:10px;font-size:12px;color:#a8916c;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.dev button{font:inherit;font-size:12px;background:var(--wood-hi);color:var(--paper);border:0;border-radius:6px;padding:4px 8px;cursor:pointer}
+@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}.movie.run .bar i{width:100%}}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="steps" id="steps" aria-hidden="true"><i></i><i></i><i></i></div>
+
+  <!-- タイトル -->
+  <section class="screen title on" id="s-title">
+    <div class="kicker">HAPPY FESTIVAL 湘南大庭　なぞときブース</div>
+    <h1>大庭城<br>攻略の密命</h1>
+    <div class="seal">密命</div>
+    <button class="btn" data-go="m-open">はじめる</button>
+  </section>
+
+  <!-- 任務1 -->
+  <section class="screen" id="s-m1">
+    <h2>任務1　なにを ぬく？</h2>
+    <div class="card msg"><span class="who">ぶしょう</span><span>キットの 2まいの なぞを といて、こたえを かんじで いれよ。</span></div>
+    <div class="card">
+      <form class="answer" id="f-m1" autocomplete="off">
+        <input id="a1" maxlength="2" aria-label="1つめの こたえ" inputmode="text">
+        <span>の</span>
+        <input id="a2" maxlength="2" aria-label="2つめの こたえ" inputmode="text">
+        <span>を ぬく</span>
+      </form>
+    </div>
+    <div class="result" id="r-m1" role="status"></div>
+    <button class="btn" form="f-m1" type="submit">こたえる</button>
+    <div class="hint">ひらがなでも OK</div>
+  </section>
+
+  <!-- 任務2 おばあちゃん -->
+  <section class="screen" id="s-m2">
+    <h2>任務2　ひみつを しる ひと</h2>
+    <div class="card msg"><span class="who">ぶしょう</span><span id="m2msg">ぬまの みずを ぬく ほうほうを しる ものが むらに いる。なぞの こたえに かんけいする ひとを さがせ。</span></div>
+    <div class="village" id="village"></div>
+    <button class="btn" id="b-m2" disabled>この ひとに きく</button>
+  </section>
+
+  <!-- 最終任務 -->
+  <section class="screen" id="s-m3">
+    <div style="display:flex;justify-content:space-between;align-items:center"><h2>最終任務　城を せめよ</h2><span style="font-size:13px">↑ きた</span></div>
+    <div class="mapwrap" id="map">
+      <svg viewBox="0 0 360 360" role="img" aria-label="大庭城と沼、ふちの4つのつつみ（ちゃいろのテープ）">
+        <rect width="360" height="360" fill="var(--grass)"/>
+        <g class="hit" id="t-swamp"><rect x="36" y="36" width="288" height="288" rx="10" fill="var(--swamp)"/></g>
+        <g stroke="#56632e" stroke-width="2.5" stroke-linecap="round" pointer-events="none">
+          <path d="M70,80 v-14 M75,81 l3,-13 M282,90 v-14 M287,91 l3,-12 M66,270 v-14 M71,271 l3,-12 M286,276 v-14 M291,277 l3,-12"/>
+        </g>
+        <g class="hit" id="t-castle" role="button" tabindex="0" aria-label="しろ">
+          <circle cx="180" cy="180" r="56" fill="var(--grass)" stroke="var(--stone)" stroke-width="6"/>
+          <path d="M156,198 L163,182 L197,182 L204,198 Z" fill="var(--stone)"/>
+          <rect x="165" y="164" width="30" height="18" fill="#fff" stroke="var(--ink)"/>
+          <path d="M157,167 L180,150 L203,167 Z" fill="var(--ink)"/>
+          <text x="180" y="220" text-anchor="middle" font-size="12" fill="var(--ink)">おおばじょう</text>
+        </g>
+        <!-- つつみ＝ふちに貼る茶色テープ4本 -->
+        <g class="hit" id="t-N" role="button" tabindex="0" aria-label="きたの つつみ"><rect class="tape" x="36" y="8" width="288" height="24" rx="3" fill="var(--tape)"/></g>
+        <g class="hit" id="t-S" role="button" tabindex="0" aria-label="みなみの つつみ"><rect class="tape" x="36" y="328" width="288" height="24" rx="3" fill="var(--tape)"/></g>
+        <g class="hit" id="t-W" role="button" tabindex="0" aria-label="にしの つつみ"><rect class="tape" x="8" y="36" width="24" height="288" rx="3" fill="var(--tape)"/></g>
+        <g class="hit" id="t-E" role="button" tabindex="0" aria-label="ひがしの つつみ"><rect class="tape" x="328" y="36" width="24" height="288" rx="3" fill="var(--tape)"/></g>
+        <g fill="var(--paper)" font-size="11" text-anchor="middle" pointer-events="none">
+          <text x="180" y="24">つつみ</text><text x="180" y="344">つつみ</text>
+          <text x="20" y="184" transform="rotate(-90 20 180)">つつみ</text><text x="340" y="184" transform="rotate(90 340 180)">つつみ</text>
+        </g>
+        <rect class="dug" id="dug" x="168" y="326" width="24" height="28" fill="var(--mud)" pointer-events="none"/>
+      </svg>
+    </div>
+    <div class="card msg"><span class="who" id="who3">おばあちゃん</span><span id="msg3">アイテムを えらんで、つかう ばしょを タップしてね。</span></div>
+    <div class="label"><span>ITEM（ひとつ えらぶ）</span><span id="sel">えらんでいない</span></div>
+    <div class="items" role="group" aria-label="アイテム">
+      <button data-item="bomb" aria-pressed="false"><svg viewBox="0 0 40 40"><circle cx="18" cy="24" r="12" fill="#2b1d12"/><path d="M24,13 q6,-8 10,-6" stroke="#8a5f34" stroke-width="3" fill="none"/><circle cx="35" cy="7" r="3" fill="#f6bb3c"/></svg>ばくだん</button>
+      <button data-item="ladder" aria-pressed="false"><svg viewBox="0 0 40 40"><path d="M12,4 L12,36 M28,4 L28,36 M12,10 H28 M12,18 H28 M12,26 H28 M12,34 H28" stroke="#8a5f34" stroke-width="3"/></svg>はしご</button>
+      <button data-item="shovel" aria-pressed="false"><svg viewBox="0 0 40 40"><rect x="18" y="3" width="4" height="22" fill="#8a5f34"/><rect x="13" y="2" width="14" height="4" rx="2" fill="#8a5f34"/><path d="M12,24 H28 L25,35 L20,38 L15,35 Z" fill="#8a8d92"/></svg>スコップ</button>
+      <button data-item="torch" aria-pressed="false"><svg viewBox="0 0 40 40"><rect x="18" y="16" width="5" height="21" fill="#8a5f34"/><path d="M20,3 C13,10 15,16 20,17 C26,16 27,9 20,3 Z" fill="#e0532a"/></svg>たいまつ</button>
+    </div>
+  </section>
+
+  <!-- クリア -->
+  <section class="screen clear" id="s-clear">
+    <div class="stamp">密命 たっせい</div>
+    <h1>おおばじょう<br>こうりゃく！</h1>
+    <div class="card">この がめんを ブースの スタッフに みせてね。</div>
+    <button class="btn sub" data-go="title">さいしょから</button>
+  </section>
+
+  <div class="dev">試作：<button data-go="title">タイトル</button><button data-go="m1">任務1</button><button data-go="m2">任務2</button><button data-go="m3">最終任務</button><button data-go="clear">クリア</button></div>
+</div>
+
+<!-- ムービー枠 -->
+<div class="movie" id="movie" role="dialog" aria-label="ムービー">
+  <div class="frame">
+    <div class="no" id="mv-no"></div>
+    <div class="big">ここで ムービーが ながれます</div>
+    <div class="what" id="mv-what"></div>
+    <div class="bar"><i></i></div>
+  </div>
+  <button class="skip" id="mv-skip">スキップ</button>
+</div>
+
+<script>
+// ムービーは Seedance 動画に差し替える前提。ここは枠だけ（src を入れたら <video> に置き換える）
+const MOVIES = {
+  "m-open": { no:"ムービー1", what:"ぼうとうの ものがたり<br>（500ねんまえ、おおばじょうを せめる 密命）", next:"m1" },
+  "m-m1":   { no:"ムービー2", what:"任務1 せいかい・かいせつ<br>（ぬまの みずを ぬけば せめこめる。でも どうやって？）", next:"m2" },
+  "m-m2":   { no:"ムービー3", what:"おばあちゃんが ひみつを おしえる<br>（ぼたもちと ひきかえに）", next:"m3" },
+  "m-end":  { no:"ムービー4", what:"エンディング<br>（つつみを ほる → みずが ぬける → せめいる → 城がもえる → いまは こうえん）", next:"clear" },
+};
+const MOVIE_MS = 3000;
+const STEP = { title:-1, m1:0, m2:1, m3:2, clear:3 };
+
+const $ = id => document.getElementById(id);
+let movieTimer = null;
+
+function go(to){
+  if (MOVIES[to]) return playMovie(to);
+  document.querySelectorAll(".screen").forEach(s => s.classList.toggle("on", s.id === "s-" + to));
+  document.querySelectorAll("#steps i").forEach((d, i) => d.classList.toggle("on", i <= STEP[to]));
+  window.scrollTo(0, 0);
+  if (to === "m1") resetM1();
+  if (to === "m2") resetM2();
+  if (to === "m3") resetM3();
+}
+function playMovie(key){
+  const m = MOVIES[key], el = $("movie");
+  $("mv-no").textContent = m.no;
+  $("mv-what").innerHTML = m.what;
+  el.style.setProperty("--dur", MOVIE_MS + "ms");
+  el.classList.remove("run"); void el.offsetWidth;
+  el.classList.add("on", "run");
+  clearTimeout(movieTimer);
+  const done = () => { clearTimeout(movieTimer); el.classList.remove("on", "run"); go(m.next); };
+  movieTimer = setTimeout(done, MOVIE_MS);
+  $("mv-skip").onclick = done;
+}
+document.querySelectorAll("[data-go]").forEach(b => b.addEventListener("click", () => go(b.dataset.go)));
+
+// ---- 任務1：ぬま の みず を ぬく ----
+const OK1 = ["沼","ぬま","ヌマ"], OK2 = ["水","みず","ミズ"];
+function resetM1(){ $("a1").value = ""; $("a2").value = ""; $("r-m1").textContent = ""; }
+$("f-m1").addEventListener("submit", e => {
+  e.preventDefault();
+  const a = $("a1").value.trim(), b = $("a2").value.trim(), r = $("r-m1");
+  r.className = "result";
+  if (OK1.includes(a) && OK2.includes(b)) { r.textContent = "せいかい！"; setTimeout(() => go("m-m1"), 700); return; }
+  r.classList.add("ng");
+  if (OK1.includes(b) && OK2.includes(a)) r.textContent = "おしい！ じゅんばんが ぎゃくだ。";
+  else if (OK1.includes(a)) r.textContent = "1つめは あっている。2つめの なぞを もういちど。";
+  else if (OK2.includes(b)) r.textContent = "2つめは あっている。1つめの なぞを もういちど。";
+  else r.textContent = "ちがうようだ。2まいの なぞを もういちど みてみよう。";
+});
+
+// ---- 任務2：ぼたもちを もつ おばあちゃん ----
+const FOOD = {
+  botamochi:`<ellipse cx="0" cy="0" rx="11" ry="8" fill="#5a2d2a"/><ellipse cx="-3" cy="-2" rx="3" ry="2" fill="#7a4440"/>`,
+  onigiri:`<path d="M0,-11 L11,8 L-11,8 Z" fill="#fff" stroke="#ccc"/><rect x="-6" y="2" width="12" height="6" fill="#1f2a1f"/>`,
+  dango:`<line x1="-12" y1="10" x2="12" y2="-10" stroke="#a87a4a" stroke-width="2"/><circle cx="-6" cy="5" r="5" fill="#f4b6c2"/><circle cx="0" cy="0" r="5" fill="#fff"/><circle cx="6" cy="-5" r="5" fill="#9cc47a"/>`,
+  fish:`<ellipse cx="-2" cy="0" rx="10" ry="5" fill="#8fb3c9"/><path d="M8,0 L14,-6 L14,6 Z" fill="#8fb3c9"/><circle cx="-7" cy="-1" r="1.3" fill="#222"/>`,
+  daikon:`<path d="M-3,-6 L3,-6 L1,12 L-1,12 Z" fill="#fff" stroke="#ddd"/><path d="M-4,-6 L-8,-14 M0,-6 L0,-15 M4,-6 L8,-14" stroke="#4f8a3a" stroke-width="3"/>`,
+  kaki:`<circle cx="0" cy="2" r="9" fill="#e8892e"/><path d="M-5,-7 L5,-7 L0,-3 Z" fill="#4f7d3a"/>`,
+  rice:`<path d="M-10,-4 H10 L7,10 H-7 Z" fill="#c9a26a"/><ellipse cx="0" cy="-4" rx="10" ry="4" fill="#fff"/>`,
+  sake:`<path d="M-5,-12 H5 V-6 L8,0 V12 H-8 V0 L-5,-6 Z" fill="#e9e2d0" stroke="#bbb"/>`,
+  takenoko:`<path d="M0,-12 L9,10 H-9 Z" fill="#b98b4f"/><path d="M-4,0 L4,0 M-6,5 L6,5" stroke="#8a5f34" stroke-width="1.5"/>`,
+};
+// 3×3 の むらびと。おばあちゃんは3人いて、ぼたもちを もつのは 1人
+const VILLAGERS = [
+  {name:"おばあちゃん", kind:"granny", food:"onigiri"},
+  {name:"りょうし",     kind:"man",    food:"fish"},
+  {name:"こども",       kind:"kid",    food:"kaki"},
+  {name:"のうふ",       kind:"man",    food:"daikon"},
+  {name:"おばあちゃん", kind:"granny", food:"botamochi"},
+  {name:"さかや",       kind:"man",    food:"sake"},
+  {name:"おばあちゃん", kind:"granny", food:"dango"},
+  {name:"むすめ",       kind:"woman",  food:"rice"},
+  {name:"おじいちゃん", kind:"elder",  food:"takenoko"},
+];
+const WRONG = {
+  onigiri:"「おにぎりなら あるがのう…。ひみつは しらんよ」",
+  dango:"「だんごは いかが？ ひみつ？ はて…」",
+  fish:"「さかなは とれたてだぞ。ぬまの ことは わからん」",
+  kaki:"「かき おいしいよ！ ひみつは しらなーい」",
+  daikon:"「だいこんしか しらん」",
+  rice:"「おこめを はこんでいる とちゅうなの」",
+  sake:"「さけを のむと わすれっぽくてな」",
+  takenoko:"「たけのこを ほりに いくところじゃ」",
+};
+function face(kind){
+  const skin = "#f1c9a0", hair = {granny:"#d9d9d9", elder:"#d9d9d9", man:"#2b1d12", woman:"#2b1d12", kid:"#2b1d12"}[kind];
+  const cloth = {granny:"#6a5a8c", elder:"#4f6d7a", man:"#3d5a80", woman:"#b8546a", kid:"#e0a33a"}[kind];
+  const bun = kind === "granny" || kind === "woman" ? `<circle cx="40" cy="14" r="8" fill="${hair}"/>` : "";
+  const beard = kind === "elder" ? `<path d="M30,44 Q40,58 50,44" fill="${hair}"/>` : "";
+  const r = kind === "kid" ? 13 : 15;
+  return `${bun}<path d="M14,96 Q16,60 40,58 Q64,60 66,96 Z" fill="${cloth}"/>
+    <circle cx="40" cy="36" r="${r}" fill="${skin}"/>
+    <path d="M${40-r},34 Q40,${36-r-6} ${40+r},34 Q${40+r-4},${30-r/2} 40,${21} Q${40-r+4},${30-r/2} ${40-r},34 Z" fill="${hair}"/>
+    <circle cx="35" cy="37" r="1.6" fill="#222"/><circle cx="45" cy="37" r="1.6" fill="#222"/>
+    <path d="M36,43 Q40,46 44,43" stroke="#a0522d" stroke-width="1.5" fill="none"/>${beard}`;
+}
+let pick = null;
+function resetM2(){
+  pick = null; $("b-m2").disabled = true;
+  $("m2msg").textContent = "ぬまの みずを ぬく ほうほうを しる ものが むらに いる。なぞの こたえに かんけいする ひとを さがせ。";
+  const v = $("village"); v.innerHTML = "";
+  VILLAGERS.forEach((p, i) => {
+    const b = document.createElement("button");
+    b.className = "villager"; b.setAttribute("aria-pressed", "false"); b.dataset.i = i;
+    b.innerHTML = `<svg viewBox="0 0 80 100" aria-hidden="true">${face(p.kind)}<g transform="translate(58,76)">${FOOD[p.food]}</g></svg>${p.name}`;
+    b.addEventListener("click", () => {
+      pick = i;
+      v.querySelectorAll(".villager").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
+      $("b-m2").disabled = false;
+    });
+    v.appendChild(b);
+  });
+}
+$("b-m2").addEventListener("click", () => {
+  if (pick === null) return;
+  const p = VILLAGERS[pick];
+  if (p.food === "botamochi") { $("m2msg").textContent = "「おや、ぼたもちの はなしを しってるのかい？」"; setTimeout(() => go("m-m2"), 900); return; }
+  $("m2msg").textContent = WRONG[p.food] + "　…この ひとでは ないようだ。";
+  $("village").children[pick].classList.add("out");
+});
+
+// ---- 最終任務：スコップで みなみの つつみ ----
+const NAMES = {bomb:"ばくだん", ladder:"はしご", shovel:"スコップ", torch:"たいまつ"};
+const PLACE = {N:"きたの つつみ", E:"ひがしの つつみ", S:"みなみの つつみ", W:"にしの つつみ"};
+let item = null, busy = false;
+function say(text, who = "おばあちゃん"){ $("who3").textContent = who; $("msg3").textContent = text; }
+function shake(){ const m = $("map"); m.classList.remove("shake"); void m.offsetWidth; m.classList.add("shake"); }
+function select(it){
+  item = it;
+  document.querySelectorAll("[data-item]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.item === it)));
+  $("sel").textContent = it ? `${NAMES[it]} を えらんだ` : "えらんでいない";
+  if (it) say(`${NAMES[it]}を もった。つかう ばしょを タップしよう。`, "じぶん");
+}
+function resetM3(){ busy = false; select(null); $("dug").classList.remove("on"); say("アイテムを えらんで、つかう ばしょを タップしてね。"); }
+function react(place){
+  if (busy) return;
+  if (!item) return say("さきに したの アイテムを ひとつ えらんでね。");
+  if (item === "bomb") { shake(); return say("おっと！ この じだいに ばくだんは まだ ないぞ。ほかの どうぐに しよう。"); }
+  if (item === "torch") return say(place === "castle" ? "ぬまが じゃまで しろまで とどかない…" : "ジュッ。ぬまの みずで きえてしまった。");
+  if (item === "ladder") return say("はしごを かけようとしたけど、ぬまの どろに しずんで たてられない！");
+  if (place === "castle" || place === "swamp") return say("ぬまの どろに あしを とられて すすめない。まずは みずを ぬこう。");
+  if (place === "N") return say("ほってみたけど、みずが うごかない…。きたは たかい ところ。みずは ひくい ほうへ ながれるんじゃ。");
+  if (place === "E" || place === "W") return say(`${PLACE[place]}を ほったけど、みずは ちょろちょろ しか でない。もっと ひくい ところは どこかの？`);
+  busy = true; $("dug").classList.add("on");
+  say("みなみの つつみに スコップじゃ！ よく みつけたのう。");
+  setTimeout(() => go("m-end"), 1200);
+}
+const targets = {"t-N":"N","t-E":"E","t-S":"S","t-W":"W","t-castle":"castle","t-swamp":"swamp"};
+for (const [id, place] of Object.entries(targets)) {
+  const el = $(id);
+  el.addEventListener("click", e => { e.stopPropagation(); react(place); });
+  el.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); react(place); } });
+}
+document.querySelectorAll("[data-item]").forEach(b => b.addEventListener("click", () => select(b.dataset.item)));
+</script>
+</body>
+</html>
