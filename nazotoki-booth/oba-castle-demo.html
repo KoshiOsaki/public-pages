@@ -107,6 +107,8 @@ svg text{font-family:var(--body);font-weight:700}
 /* クリア */
 .clear{min-height:80vh;justify-content:center;text-align:center;gap:18px}
 .clear h1{font-size:34px}
+#s-ok .stamp{font-size:30px;animation:pop .45s ease-out}
+@keyframes pop{0%{transform:rotate(-4deg) scale(.3);opacity:0}70%{transform:rotate(-4deg) scale(1.12)}100%{transform:rotate(-4deg) scale(1);opacity:1}}
 .clear .stamp{font-family:var(--display);font-size:22px;color:#fff;background:#b8322a;border-radius:10px;padding:10px 18px;align-self:center;transform:rotate(-4deg)}
 
 .dev{margin-top:28px;border-top:1px dashed var(--wood-hi);padding-top:10px;font-size:12px;color:#a8916c;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
@@ -202,7 +204,14 @@ svg text{font-family:var(--body);font-weight:700}
     </div>
   </section>
 
-  <!-- クリア -->
+  <!-- せいかい（ムービーの まえに 1まい はさむ） -->
+  <section class="screen clear" id="s-ok">
+    <div class="stamp">せいかい！</div>
+    <h2 id="ok-title"></h2>
+    <div class="card msg" style="text-align:left"><span class="who" id="ok-who"></span><span id="ok-text"></span></div>
+    <button class="btn" id="b-ok">ムービーに すすむ</button>
+  </section>
+
   <!-- きねん さつえい（スキップなし） -->
   <section class="screen" id="s-photo">
     <h2>きねん さつえい</h2>
@@ -260,6 +269,19 @@ const MOVIES = {
   "m-end":  { no:"ムービー4", what:"エンディング<br>（つつみを ほる → みずが ぬける → せめいる → 城がもえる → いまは こうえん）", next:"photo" },
 };
 const MOVIE_MS = 3000;
+// せいかい画面。答えを ふりかえってから ムービーへ
+const OKS = {
+  m1: { title:"任務1 たっせい", who:"ぶしょう", text:"こたえは「ぬまの みずを ぬく」。ぬまの みずさえ ぬければ、城に せめこめるぞ。…じゃが、どうやって ぬく？", next:"m-m1" },
+  m2: { title:"任務2 たっせい", who:"ぶしょう", text:"ぼたもちを もった おばあちゃんが、ぬまの ひみつを しっていた！ はなしを きいてみよう。", next:"m-m2" },
+  m3: { title:"最終任務 たっせい", who:"おばあちゃん", text:"みなみの ☆の つつみを スコップで ほった！ ひくい ほうへ、ぬまの みずが ながれだしたぞ…", next:"m-end" },
+};
+let okNext = null;
+function showOK(k){
+  const o = OKS[k];
+  okNext = o.next; STEP.ok = STEP[k];
+  $("ok-title").textContent = o.title; $("ok-who").textContent = o.who; $("ok-text").textContent = o.text;
+  go("ok");
+}
 const STEP = { title:-1, name:-1, m1:0, m2:1, m3:2, photo:3, clear:3 };
 const HASHTAGS = ["大庭城攻略の密命", "HAPPYFESTIVAL湘南大庭"]; // 仮
 let nick = "", t0 = null, t1 = null, photoURL = "", photoBlob = null;
@@ -294,6 +316,7 @@ function playMovie(key){
   movieTimer = setTimeout(done, MOVIE_MS);
   $("mv-skip").onclick = done;
 }
+$("b-ok").addEventListener("click", () => go(okNext));
 document.querySelectorAll("[data-go]").forEach(b => b.addEventListener("click", () => go(b.dataset.go)));
 
 // ---- 任務1：ぬま の みず を ぬく ----
@@ -322,7 +345,7 @@ $("f-m1").addEventListener("submit", e => {
   const v = kanas.map(k => k.value), a = v[0] + v[1], b = v[2] + v[3], r = $("r-m1");
   r.className = "result";
   if (v.some(c => !c)) { r.classList.add("ng"); r.textContent = "4つの マスを ぜんぶ うめよう"; return; }
-  if (a === OK1 && b === OK2) { r.textContent = "せいかい！"; setTimeout(() => go("m-m1"), 700); return; }
+  if (a === OK1 && b === OK2) { r.textContent = "せいかい！"; setTimeout(() => showOK("m1"), 600); return; }
   r.classList.add("ng");
   if (a === OK2 && b === OK1) r.textContent = "おしい！ じゅんばんが ぎゃくだ。";
   else if (a === OK1) r.textContent = "1つめは あっている。2つめの なぞを もういちど。";
@@ -495,7 +518,7 @@ function resetM2(){
 $("b-m2").addEventListener("click", () => {
   if (pick === null) return;
   const p = VILLAGERS[pick];
-  if (p.food === "botamochi") { $("m2msg").textContent = "「おや、ぼたもちの はなしを しってるのかい？」"; setTimeout(() => go("m-m2"), 900); return; }
+  if (p.food === "botamochi") { $("m2msg").textContent = "「おや、ぼたもちの はなしを しってるのかい？」"; setTimeout(() => showOK("m2"), 900); return; }
   $("m2msg").textContent = WRONG[p.food] + "　…この ひとでは ないようだ。";
   $("village").children[pick].classList.add("out");
 });
@@ -524,7 +547,7 @@ function react(place){
   if (place === "E" || place === "W") return say(`${PLACE[place]}を ほったけど、みずは ちょろちょろ しか でない。もっと ひくい ところは どこかの？`);
   busy = true; t1 = Date.now(); $("dug").classList.add("on");
   say("みなみの ☆の つつみに スコップじゃ！ よく みつけたのう。");
-  setTimeout(() => go("m-end"), 1200);
+  setTimeout(() => showOK("m3"), 1200);
 }
 const targets = {"t-N":"N","t-E":"E","t-S":"S","t-W":"W","t-castle":"castle","t-swamp":"swamp"};
 for (const [id, place] of Object.entries(targets)) {
