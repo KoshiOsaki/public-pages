@@ -277,7 +277,7 @@ const MOVIE_MS = 3000;
 const OKS = {
   m1: { title:"任務1 たっせい", who:"ぶしょう", text:"こたえは「ぬまの みずを ぬく」。ぬまの みずさえ ぬければ、城に せめこめるぞ。…じゃが、どうやって ぬく？", next:"m-m1" },
   m2: { title:"任務2 たっせい", who:"ぶしょう", text:"ぼたもちを もった おばあちゃんが、ぬまの ひみつを しっていた！ はなしを きいてみよう。", next:"m-m2" },
-  m3: { title:"最終任務 たっせい", who:"おばあちゃん", text:"さかの したの みなみの つつみを、スコップで ほった！ ひくい ほうへ ぬまの みずが ながれだしたぞ…", next:"m-end" },
+  m3: { title:"最終任務 たっせい", who:"おばあちゃん", text:"⭐の つつみ＝みなみの つつみを、スコップで ほった！ ぬまの みずが ながれだしたぞ…", next:"m-end" },
 };
 let okNext = null;
 function showOK(k){
@@ -539,7 +539,7 @@ $("b-m2").addEventListener("click", () => {
   $("village").children[pick].classList.add("out");
 });
 
-// ---- 最終任務：スコップで みなみの つつみ（⭐＝さかの したの つつみ） ----
+// ---- 最終任務：スコップで みなみの つつみ（しりとりの⭐＝スコップ、シートの⭐＝みなみの つつみ） ----
 const NAMES = {bomb:"ばくだん", ladder:"はしご", shovel:"スコップ", torch:"たいまつ"};
 const PLACE = {N:"きたの つつみ", E:"ひがしの つつみ", S:"みなみの つつみ", W:"にしの つつみ"};
 let item = null, busy = false;
@@ -559,9 +559,9 @@ function react(place){
   if (item === "torch") return say(place === "castle" ? "ぬまが じゃまで しろまで とどかない…" : "ジュッ。ぬまの みずで きえてしまった。");
   if (item === "ladder") return say("はしごを かけようとしたけど、ぬまの どろに しずんで たてられない！");
   if (place === "castle" || place === "swamp") return say("ぬまの どろに あしを とられて すすめない。まずは みずを ぬこう。");
-  if (place !== "S") return say(`${PLACE[place]}を ほったけど、みずが ぬけない…。みずは ひくい ほうへ ながれる。⭐の つつみは どの ほうがくかな？`);
+  if (place !== "S") return say(`${PLACE[place]}を ほったけど、みずが ぬけない…。⭐の つつみは どの ほうがくかな？`);
   busy = true; t1 = Date.now(); $("dug").classList.add("on");
-  say("みなみの つつみに スコップじゃ！ よく みつけたのう。");
+  say("⭐の みなみの つつみに スコップじゃ！ よく みつけたのう。");
   setTimeout(() => showOK("m3"), 1200);
 }
 const targets = {"t-N":"N","t-E":"E","t-S":"S","t-W":"W","t-castle":"castle","t-swamp":"swamp"};
