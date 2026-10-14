@@ -172,7 +172,7 @@ svg text{font-family:var(--body);font-weight:700}
   <section class="screen" id="s-m3">
     <div style="display:flex;justify-content:space-between;align-items:center"><h2>最終任務　城を せめよ</h2></div>
     <div class="mapwrap" id="map">
-      <svg viewBox="0 0 360 360" role="img" aria-label="大庭城と沼、ふちの4つのつつみ（上が北）">
+      <svg viewBox="0 0 360 360" role="img" aria-label="大庭城と沼、ふちの4つのつつみ（右が北）">
         <rect width="360" height="360" fill="var(--grass)"/>
         <g class="hit" id="t-swamp"><rect x="36" y="36" width="288" height="288" rx="10" fill="var(--swamp)"/></g>
         <g stroke="#56632e" stroke-width="2.5" stroke-linecap="round" pointer-events="none">
@@ -185,16 +185,16 @@ svg text{font-family:var(--body);font-weight:700}
           <path d="M157,167 L180,150 L203,167 Z" fill="var(--ink)"/>
           <text x="180" y="220" text-anchor="middle" font-size="12" fill="var(--ink)">おおばじょう</text>
         </g>
-        <!-- つつみ＝ふちの茶色テープ4本。Webの地図は ふつうの向き（上=北・下=南） -->
-        <g class="hit" id="t-N" role="button" tabindex="0" aria-label="きたの つつみ"><rect class="tape" x="36" y="8" width="288" height="24" rx="3" fill="var(--tape)"/></g>
-        <g class="hit" id="t-S" role="button" tabindex="0" aria-label="みなみの つつみ"><rect class="tape" x="36" y="328" width="288" height="24" rx="3" fill="var(--tape)"/></g>
-        <g class="hit" id="t-W" role="button" tabindex="0" aria-label="にしの つつみ"><rect class="tape" x="8" y="36" width="24" height="288" rx="3" fill="var(--tape)"/></g>
-        <g class="hit" id="t-E" role="button" tabindex="0" aria-label="ひがしの つつみ"><rect class="tape" x="328" y="36" width="24" height="288" rx="3" fill="var(--tape)"/></g>
+        <!-- つつみ＝ふちの茶色テープ4本。Webの地図は 右=北・左=南（シートの⭐の位置をそのまま押しても当たらないよう、シートから90°回す） -->
+        <g class="hit" id="t-N" role="button" tabindex="0" aria-label="きたの つつみ"><rect class="tape" x="328" y="36" width="24" height="288" rx="3" fill="var(--tape)"/></g>
+        <g class="hit" id="t-S" role="button" tabindex="0" aria-label="みなみの つつみ"><rect class="tape" x="8" y="36" width="24" height="288" rx="3" fill="var(--tape)"/></g>
+        <g class="hit" id="t-W" role="button" tabindex="0" aria-label="にしの つつみ"><rect class="tape" x="36" y="8" width="288" height="24" rx="3" fill="var(--tape)"/></g>
+        <g class="hit" id="t-E" role="button" tabindex="0" aria-label="ひがしの つつみ"><rect class="tape" x="36" y="328" width="288" height="24" rx="3" fill="var(--tape)"/></g>
         <g fill="#fff" font-size="12" text-anchor="middle" dominant-baseline="central" pointer-events="none">
-          <text x="180" y="20">きた</text><text x="180" y="340">みなみ</text>
-          <text x="20" y="180" writing-mode="tb">にし</text><text x="340" y="180" writing-mode="tb">ひがし</text>
+          <text x="180" y="20">にし</text><text x="180" y="340">ひがし</text>
+          <text x="20" y="180" writing-mode="tb">みなみ</text><text x="340" y="180" writing-mode="tb">きた</text>
         </g>
-        <rect class="dug" id="dug" x="168" y="326" width="24" height="28" fill="var(--mud)" pointer-events="none"/>
+        <rect class="dug" id="dug" x="6" y="168" width="28" height="24" fill="var(--mud)" pointer-events="none"/>
       </svg>
     </div>
     <div class="card msg"><span class="who" id="who3">おばあちゃん</span><span id="msg3">シートと さっしの なぞを といて、どうぐを えらび、ほる つつみを タップせよ。</span></div>
