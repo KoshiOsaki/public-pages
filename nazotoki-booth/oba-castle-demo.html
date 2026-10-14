@@ -11,7 +11,7 @@
 :root{
   color-scheme:dark;
   --wood:#3a2618; --wood-hi:#5a3b24; --paper:#f3e6c8; --ink:#2b1d12; --btn:#e8892e; --btn-ink:#fff;
-  --grass:#8fae6a; --swamp:#7b7044; --mud:#6e5538; --tape:#a87a4a; --tape-hi:#c09062; --stone:#8a8d92;
+  --grass:#8fae6a; --swamp:#4f7d96; --mud:#6e5538; --tape:#a87a4a; --tape-hi:#c09062; --stone:#8a8d92;
   --ok:#3f8f4e; --ng:#c0392b;
   --display:"Dela Gothic One","Hiragino Sans",sans-serif;
   --body:"Zen Maru Gothic","Hiragino Maru Gothic ProN","Hiragino Sans",sans-serif;
@@ -172,11 +172,11 @@ svg text{font-family:var(--body);font-weight:700}
   <section class="screen" id="s-m3">
     <div style="display:flex;justify-content:space-between;align-items:center"><h2>最終任務　城を せめよ</h2></div>
     <div class="mapwrap" id="map">
-      <svg viewBox="0 0 360 360" role="img" aria-label="大庭城と沼、ふちの4つのつつみ（右が北）">
+      <svg viewBox="0 0 360 360" role="img" aria-label="大庭城と沼、ふちの4つのつつみと方位磁針">
         <rect width="360" height="360" fill="var(--grass)"/>
         <g class="hit" id="t-swamp"><rect x="36" y="36" width="288" height="288" rx="10" fill="var(--swamp)"/></g>
-        <g stroke="#56632e" stroke-width="2.5" stroke-linecap="round" pointer-events="none">
-          <path d="M70,80 v-14 M75,81 l3,-13 M282,90 v-14 M287,91 l3,-12 M66,270 v-14 M71,271 l3,-12 M286,276 v-14 M291,277 l3,-12"/>
+        <g stroke="#2f5a4a" stroke-width="2.5" stroke-linecap="round" pointer-events="none">
+          <path d="M70,80 v-14 M75,81 l3,-13 M66,270 v-14 M71,271 l3,-12 M286,276 v-14 M291,277 l3,-12"/>
         </g>
         <g class="hit" id="t-castle" role="button" tabindex="0" aria-label="しろ">
           <circle cx="180" cy="180" r="56" fill="var(--grass)" stroke="var(--stone)" stroke-width="6"/>
@@ -185,15 +185,19 @@ svg text{font-family:var(--body);font-weight:700}
           <path d="M157,167 L180,150 L203,167 Z" fill="var(--ink)"/>
           <text x="180" y="220" text-anchor="middle" font-size="12" fill="var(--ink)">おおばじょう</text>
         </g>
+        <!-- 方位磁針。赤い針（きた）が右を指す。堤に方角の字は書かない -->
+        <g pointer-events="none" transform="translate(282,78)">
+          <circle r="28" fill="#f6efe0" stroke="var(--ink)" stroke-width="2"/>
+          <path d="M0,-6 L22,0 L0,6 Z" fill="#d0392b"/>
+          <path d="M0,-6 L-22,0 L0,6 Z" fill="#fff" stroke="var(--ink)" stroke-width="1"/>
+          <circle r="2.5" fill="var(--ink)"/>
+          <text x="12" y="-12" font-size="8.5" fill="#d0392b" text-anchor="middle">きた</text>
+        </g>
         <!-- つつみ＝ふちの茶色テープ4本。Webの地図は 右=北・左=南（シートの⭐の位置をそのまま押しても当たらないよう、シートから90°回す） -->
         <g class="hit" id="t-N" role="button" tabindex="0" aria-label="きたの つつみ"><rect class="tape" x="328" y="36" width="24" height="288" rx="3" fill="var(--tape)"/></g>
         <g class="hit" id="t-S" role="button" tabindex="0" aria-label="みなみの つつみ"><rect class="tape" x="8" y="36" width="24" height="288" rx="3" fill="var(--tape)"/></g>
         <g class="hit" id="t-W" role="button" tabindex="0" aria-label="にしの つつみ"><rect class="tape" x="36" y="8" width="288" height="24" rx="3" fill="var(--tape)"/></g>
         <g class="hit" id="t-E" role="button" tabindex="0" aria-label="ひがしの つつみ"><rect class="tape" x="36" y="328" width="288" height="24" rx="3" fill="var(--tape)"/></g>
-        <g fill="#fff" font-size="12" text-anchor="middle" dominant-baseline="central" pointer-events="none">
-          <text x="180" y="20">にし</text><text x="180" y="340">ひがし</text>
-          <text x="20" y="180" writing-mode="tb">みなみ</text><text x="340" y="180" writing-mode="tb">きた</text>
-        </g>
         <rect class="dug" id="dug" x="6" y="168" width="28" height="24" fill="var(--mud)" pointer-events="none"/>
       </svg>
     </div>
