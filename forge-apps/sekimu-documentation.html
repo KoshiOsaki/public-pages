@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SEKIMU Documentation</title>
+  <style>
+    :root{--bg:#f4f7fb;--card:#fff;--ink:#172b4d;--muted:#5e6c84;--line:#dfe1e6;--accent:#0c66e4;--soft:#e9f2ff} @media(prefers-color-scheme:dark){:root{--bg:#101214;--card:#1d2125;--ink:#f1f2f4;--muted:#b6c2cf;--line:#454f59;--accent:#579dff;--soft:#1c2b41}} *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.7 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif} main{width:min(820px,calc(100% - 32px));margin:48px auto 80px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:clamp(24px,5vw,56px)} h1{font-size:clamp(30px,6vw,44px);line-height:1.15;margin:0 0 8px} h2{font-size:21px;margin:36px 0 8px} h3{font-size:17px;margin:24px 0 4px} p,li{color:var(--muted)} a{color:var(--accent)} .meta{margin:0 0 36px}.nav{display:flex;gap:16px;flex-wrap:wrap;padding-bottom:24px;border-bottom:1px solid var(--line)} .callout{background:var(--soft);border-radius:10px;padding:14px 18px} strong{color:var(--ink)}
+  </style>
+</head>
+<body><main>
+  <h1>SEKIMU Documentation</h1>
+  <p class="meta">Page governance for Confluence · Updated October 30, 2026</p>
+  <nav class="nav"><a href="sekimu-privacy.html">Privacy</a><a href="sekimu-support.html">Support</a></nav>
+
+  <p class="callout"><strong>What SEKIMU does:</strong> adds ownership, review due dates, lightweight approvals, stale-page discovery, and reminders directly inside Confluence.</p>
+
+  <h2>Install and open</h2>
+  <ol>
+    <li>A Confluence site administrator installs SEKIMU from Atlassian Marketplace.</li>
+    <li>Open a Confluence page and select <strong>SEKIMU</strong> beneath the page title to view its governance state.</li>
+    <li>Open <strong>Apps → SEKIMU</strong> to see your work and stale pages.</li>
+  </ol>
+  <p>No separate account or external service is required.</p>
+
+  <h2>Page ownership and reviews</h2>
+  <h3>Assign an owner</h3>
+  <p>Editors can assign a responsible Atlassian user to a page. When an owner is first assigned, SEKIMU calculates a review due date from the site’s default review interval.</p>
+  <h3>Set a review interval</h3>
+  <p>Choose a periodic interval or disable periodic review for the page. Select <strong>Mark as reviewed</strong> after checking the content; SEKIMU records the reviewer and moves the next due date forward.</p>
+
+  <h2>Approvals</h2>
+  <ol>
+    <li>An editor selects between 1 and 10 reviewers and requests approval.</li>
+    <li>SEKIMU posts a Confluence comment mentioning the reviewers.</li>
+    <li>Each reviewer approves or rejects. A rejection requires a comment.</li>
+    <li>When all reviewers approve, the page becomes approved. If the page changes later, SEKIMU shows that it was edited after approval.</li>
+  </ol>
+  <p>This is a lightweight approval record, not a multi-stage workflow or a page-version lock.</p>
+
+  <h2>Dashboard and reminders</h2>
+  <p><strong>My work</strong> shows overdue or soon-due pages you own and approvals waiting for your response. <strong>Stale pages</strong> lists pages that have not been updated within the configured period. Results are limited to pages the current user can view.</p>
+  <p>Scheduled reminders can mention owners or unanswered reviewers in page comments. Administrators can disable reminder comments or change the minimum repeat interval.</p>
+
+  <h2>Site settings</h2>
+  <p>Site administrators can configure the default review interval, how soon a review is considered due, the stale-page threshold, reminder comments, and the reminder repeat interval.</p>
+
+  <h2>Permissions and data</h2>
+  <p>SEKIMU respects Confluence view and edit permissions. Users without edit permission can view the governance state but cannot change it. Administrative settings require site-administrator access. For details, see the <a href="sekimu-privacy.html">Privacy Policy</a>.</p>
+
+  <h2>Troubleshooting</h2>
+  <ul>
+    <li><strong>SEKIMU is not visible:</strong> confirm that the app is installed for the current Confluence site and reload the page.</li>
+    <li><strong>A control is read-only:</strong> confirm you have permission to edit the Confluence page.</li>
+    <li><strong>A page is missing from a list:</strong> confirm you can view the page and that it meets the selected status or stale threshold.</li>
+    <li><strong>A reminder did not appear:</strong> confirm reminders are enabled and the repeat interval has elapsed.</li>
+  </ul>
+  <p>Still stuck? See <a href="sekimu-support.html">Support</a>.</p>
+</main></body></html>
