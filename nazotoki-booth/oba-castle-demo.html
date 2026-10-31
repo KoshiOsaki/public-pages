@@ -205,7 +205,7 @@ svg text{font-family:var(--body);font-weight:700}
     <div class="label"><span>ITEM（ひとつ えらぶ）</span><span id="sel">えらんでいない</span></div>
     <div class="items" role="group" aria-label="アイテム">
       <button data-item="bomb" aria-pressed="false"><svg viewBox="0 0 40 40"><circle cx="18" cy="24" r="12" fill="#2b1d12"/><path d="M24,13 q6,-8 10,-6" stroke="#8a5f34" stroke-width="3" fill="none"/><circle cx="35" cy="7" r="3" fill="#f6bb3c"/></svg>ばくだん</button>
-      <button data-item="rope" aria-pressed="false"><svg viewBox="0 0 40 40"><circle cx="16" cy="25" r="10" fill="none" stroke="#b08a52" stroke-width="3"/><circle cx="16" cy="25" r="4.5" fill="none" stroke="#b08a52" stroke-width="3"/><path d="M25,21 L32,8" stroke="#b08a52" stroke-width="3" stroke-linecap="round"/><path d="M32,8 q-7,-1 -8,5 M32,8 q6,2 5,9 M32,8 L32,2" stroke="#6b6f75" stroke-width="2.6" fill="none" stroke-linecap="round"/></svg>かぎなわ</button>
+      <button data-item="rope" aria-pressed="false"><svg viewBox="0 0 40 40"><circle cx="19" cy="21" r="13" fill="none" stroke="#b08a52" stroke-width="3.2"/><circle cx="19" cy="21" r="8" fill="none" stroke="#b08a52" stroke-width="3.2"/><circle cx="19" cy="21" r="3" fill="none" stroke="#b08a52" stroke-width="3"/><path d="M30,28 q4,5 2,10" stroke="#b08a52" stroke-width="3.2" fill="none" stroke-linecap="round"/></svg>ロープ</button>
       <button data-item="ladder" aria-pressed="false"><svg viewBox="0 0 40 40"><path d="M12,4 L12,36 M28,4 L28,36 M12,10 H28 M12,18 H28 M12,26 H28 M12,34 H28" stroke="#8a5f34" stroke-width="3"/></svg>はしご</button>
       <button data-item="bow" aria-pressed="false"><svg viewBox="0 0 40 40"><path d="M11,4 Q33,20 11,36" stroke="#8a5f34" stroke-width="3.2" fill="none" stroke-linecap="round"/><line x1="11" y1="4" x2="11" y2="36" stroke="#555" stroke-width="1.2"/><line x1="5" y1="20" x2="33" y2="20" stroke="#5a4a3a" stroke-width="2"/><path d="M37,20 L30,16 L30,24 Z" fill="#6b6f75"/><path d="M5,20 l-2,-4 M5,20 l-2,4" stroke="#c0392b" stroke-width="2"/></svg>ゆみや</button>
       <button data-item="shovel" aria-pressed="false"><svg viewBox="0 0 40 40"><rect x="18" y="3" width="4" height="22" fill="#8a5f34"/><rect x="13" y="2" width="14" height="4" rx="2" fill="#8a5f34"/><path d="M12,24 H28 L25,35 L20,38 L15,35 Z" fill="#8a8d92"/></svg>スコップ</button>
@@ -548,7 +548,7 @@ $("b-m2").addEventListener("click", () => {
 });
 
 // ---- 最終任務：スコップで みなみの つつみ（しりとりの⭐＝スコップ、シートの⭐＝みなみの つつみ） ----
-const NAMES = {bomb:"ばくだん", rope:"かぎなわ", ladder:"はしご", bow:"ゆみや", shovel:"スコップ", axe:"おの", torch:"たいまつ", rod:"つりざお"};
+const NAMES = {bomb:"ばくだん", rope:"ロープ", ladder:"はしご", bow:"ゆみや", shovel:"スコップ", axe:"おの", torch:"たいまつ", rod:"つりざお"};
 const PLACE = {N:"きたの つつみ", E:"ひがしの つつみ", S:"みなみの つつみ", W:"にしの つつみ"};
 let item = null, busy = false;
 function say(text, who = "おばあちゃん"){ $("who3").textContent = who; $("msg3").textContent = text; }
@@ -566,7 +566,7 @@ function react(place){
   if (item === "bomb") { shake(); return say("おっと！ この じだいに ばくだんは まだ ないぞ。ほかの どうぐに しよう。"); }
   if (item === "torch") return say(place === "castle" ? "ぬまが じゃまで しろまで とどかない…" : "ジュッ。ぬまの みずで きえてしまった。");
   if (item === "ladder") return say("はしごを かけようとしたけど、ぬまの どろに しずんで たてられない！");
-  if (item === "rope") return say("かぎなわを なげたけど、しろの かべまで とどかない…");
+  if (item === "rope") return say("ロープを なげたけど、しろの かべまで とどかない…");
   if (item === "bow") return say("やを うったけど、しろは とおくて とどかない。");
   if (item === "axe") return say("おので きれる ものが ここには ないみたい。");
   if (item === "rod") return say("さかなが つれた！ でも ぬまの みずは へらない…");
