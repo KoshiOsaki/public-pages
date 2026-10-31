@@ -114,6 +114,9 @@ svg text{font-family:var(--body);font-weight:700}
 @keyframes pop{0%{transform:rotate(-4deg) scale(.3);opacity:0}70%{transform:rotate(-4deg) scale(1.12)}100%{transform:rotate(-4deg) scale(1);opacity:1}}
 .clear .stamp{font-family:var(--display);font-size:22px;color:#fff;background:#b8322a;border-radius:10px;padding:10px 18px;align-self:center;transform:rotate(-4deg)}
 
+/* BGM の オン・オフ */
+.bgm-toggle{position:fixed;top:8px;right:8px;z-index:5;font:inherit;font-size:12px;background:var(--wood-hi);color:var(--paper);border:0;border-radius:999px;padding:6px 12px;cursor:pointer}
+
 .dev{margin-top:28px;border-top:1px dashed var(--wood-hi);padding-top:10px;font-size:12px;color:#a8916c;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
 .dev button{font:inherit;font-size:12px;background:var(--wood-hi);color:var(--paper);border:0;border-radius:6px;padding:4px 8px;cursor:pointer}
 @media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}.movie.run .bar i{width:100%}}
@@ -259,6 +262,10 @@ svg text{font-family:var(--body);font-weight:700}
   <div class="dev">試作：<button data-go="title">タイトル</button><button data-go="name">なまえ</button><button data-go="m1">任務1</button><button data-go="m2">任務2</button><button data-go="m3">最終任務</button><button data-go="photo">さつえい</button><button data-go="clear">クリア</button></div>
 </div>
 
+<!-- BGM。ブラウザは さわるまで 音を 出させないので、さいしょの タップで ながしはじめる -->
+<audio id="bgm" src="audio/bgm.m4a" loop preload="auto"></audio>
+<button class="bgm-toggle" id="bgm-toggle" aria-pressed="true">♪ BGM オン</button>
+
 <!-- ムービー枠 -->
 <div class="movie" id="movie" role="dialog" aria-label="ムービー">
   <video id="mv-video" playsinline preload="auto"></video>
@@ -301,6 +308,22 @@ try { nick = localStorage.getItem("oba-nick") || ""; } catch {}
 const $ = id => document.getElementById(id);
 let movieTimer = null;
 
+// ---- BGM：ずっと ループ。音つきの ムービー中だけ とめる ----
+const bgm = $("bgm");
+bgm.volume = 0.4;
+let bgmOn = true;
+try { bgmOn = localStorage.getItem("oba-bgm") !== "off"; } catch {}
+const bgmPlay = () => { if (bgmOn && !$("movie").classList.contains("vid")) bgm.play().catch(() => {}); };
+function bgmLabel(){ $("bgm-toggle").textContent = bgmOn ? "♪ BGM オン" : "♪ BGM オフ"; $("bgm-toggle").setAttribute("aria-pressed", String(bgmOn)); }
+$("bgm-toggle").addEventListener("click", e => {
+  e.stopPropagation();
+  bgmOn = !bgmOn; try { localStorage.setItem("oba-bgm", bgmOn ? "on" : "off"); } catch {}
+  bgmLabel(); bgmOn ? bgmPlay() : bgm.pause();
+});
+bgmLabel();
+document.addEventListener("pointerdown", bgmPlay, { once: true });
+document.addEventListener("keydown", bgmPlay, { once: true });
+
 function go(to){
   if (MOVIES[to]) return playMovie(to);
   document.querySelectorAll(".screen").forEach(s => s.classList.toggle("on", s.id === "s-" + to));
@@ -323,10 +346,11 @@ function playMovie(key){
   clearTimeout(movieTimer);
   const done = () => {
     clearTimeout(movieTimer); v.onended = null; v.pause();
-    el.classList.remove("on", "run", "vid"); go(m.next);
+    el.classList.remove("on", "run", "vid"); bgmPlay(); go(m.next);
   };
   $("mv-skip").onclick = done;
   if (m.src) {
+    bgm.pause();
     el.classList.add("on", "vid");
     v.controls = false; v.src = m.src; v.currentTime = 0;
     v.onended = done;
